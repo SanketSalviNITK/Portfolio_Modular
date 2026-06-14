@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Résumé Admin · Dr. Sanket Salvi</title>
+<style>
+  :root{ --bg:#0f1722; --panel:#16212e; --line:#26384a; --ink:#e6eef5; --dim:#8aa0b2;
+         --teal:#1aa6bd; --teal2:#0e7c90; --warn:#e0a23a; --ok:#3fae6b; }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  header{position:sticky;top:0;z-index:5;background:rgba(15,23,34,.95);backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);padding:14px 20px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
+  header h1{font-size:15px;margin:0;letter-spacing:.04em;}
+  header .sp{flex:1;}
+  header .meta{font-size:12px;color:var(--dim);}
+  .wrap{max-width:920px;margin:0 auto;padding:22px 20px 120px;}
+  .note{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px;
+    font-size:13px;color:var(--dim);margin-bottom:20px;}
+  .note b{color:var(--ink);}
+  details.sec{background:var(--panel);border:1px solid var(--line);border-radius:10px;margin-bottom:14px;overflow:hidden;}
+  details.sec>summary{cursor:pointer;padding:14px 16px;font-weight:700;letter-spacing:.03em;list-style:none;
+    display:flex;align-items:center;gap:10px;}
+  details.sec>summary::-webkit-details-marker{display:none;}
+  details.sec>summary::before{content:"▸";color:var(--teal);transition:transform .15s;}
+  details.sec[open]>summary::before{transform:rotate(90deg);}
+  .sec-body{padding:6px 16px 18px;border-top:1px solid var(--line);}
+  label{display:block;font-size:12px;color:var(--dim);margin:12px 0 4px;letter-spacing:.02em;}
+  input[type=text], textarea{width:100%;background:#0e1822;border:1px solid var(--line);border-radius:7px;
+    color:var(--ink);font:13px/1.5 inherit;padding:9px 11px;}
+  textarea{resize:vertical;min-height:58px;}
+  input:focus, textarea:focus{outline:none;border-color:var(--teal);}
+  .row{display:flex;gap:10px;flex-wrap:wrap;}
+  .row>div{flex:1;min-width:140px;}
+  .card{background:#0e1822;border:1px solid var(--line);border-radius:9px;padding:12px;margin:10px 0;position:relative;}
+  .card .del{position:absolute;top:8px;right:8px;background:transparent;border:1px solid var(--line);
+    color:var(--dim);border-radius:6px;font-size:11px;padding:4px 8px;cursor:pointer;}
+  .card .del:hover{border-color:#c0584a;color:#e88;}
+  button.add{background:transparent;border:1px dashed var(--teal2);color:var(--teal);border-radius:7px;
+    padding:9px 14px;cursor:pointer;font-size:12px;letter-spacing:.04em;margin-top:8px;}
+  button.add:hover{background:rgba(26,166,189,.1);}
+  .btn{background:var(--teal2);border:none;color:#fff;font-weight:700;letter-spacing:.04em;
+    padding:10px 16px;border-radius:8px;cursor:pointer;font-size:13px;}
+  .btn:hover{filter:brightness(1.1);}
+  .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--ink);}
+  .btn.warn{background:var(--warn);color:#1a1205;}
+  .changelog{font-size:12.5px;}
+  .changelog .e{border-left:2px solid var(--teal2);padding:4px 0 4px 12px;margin:8px 0;}
+  .changelog .e .d{color:var(--teal);font-weight:700;}
+  .changelog .e .w{color:var(--dim);}
+  #status{font-size:12px;color:var(--ok);}
+  .pillhint{font-size:11px;color:var(--dim);margin-top:3px;}
+  .savebar{position:fixed;bottom:0;left:0;right:0;background:rgba(15,23,34,.97);border-top:1px solid var(--line);
+    padding:12px 20px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;z-index:6;}
+  .savebar .sp{flex:1;}
+  dialog{background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:12px;max-width:460px;width:92%;padding:0;}
+  dialog::backdrop{background:rgba(0,0,0,.6);}
+  .dlg-body{padding:20px;}
+  .dlg-body h3{margin:0 0 4px;}
+  .dlg-body p{color:var(--dim);font-size:13px;margin:0 0 14px;}
+</style>
+</head>
+<body>
+<header>
+  <h1>📝 Résumé Admin</h1>
+  <span class="meta" id="hmeta">— no data loaded —</span>
+  <span class="sp"></span>
+  <button class="btn ghost" id="load-file">Load JSON file…</button>
+  <input type="file" id="file-in" accept="application/json,.json" style="display:none">
+  <button class="btn ghost" id="load-default">Start from current</button>
+</header>
+
+<div class="wrap">
+  <div class="note">
+    <b>How this works.</b> Edit your résumé below, then <b>Save &amp; Export</b>. You'll be asked
+    <b>what changed</b> and <b>which section</b> — that's logged with today's date into the changelog and the
+    site shows the latest date. The tool downloads an updated <b>resume-data.json</b>; commit/upload that one
+    file to your GitHub Pages repo (next to <code>index.html</code>) and the live site updates within ~1 minute.
+    Nothing here is uploaded anywhere — it all runs locally in your browser.
+  </div>
+
+  <details class="sec" open><summary>Header</summary><div class="sec-body" id="s-header"></div></details>
+  <details class="sec"><summary>Summary &amp; Counts</summary><div class="sec-body" id="s-summary"></div></details>
+  <details class="sec"><summary>Education</summary><div class="sec-body" id="s-education"></div></details>
+  <details class="sec"><summary>Experience</summary><div class="sec-body" id="s-experience"></div></details>
+  <details class="sec"><summary>Publications</summary><div class="sec-body" id="s-publications"></div></details>
+  <details class="sec"><summary>Patents</summary><div class="sec-body" id="s-patents"></div></details>
+  <details class="sec"><summary>Awards</summary><div class="sec-body" id="s-awards"></div></details>
+  <details class="sec"><summary>Skills · Research · Certifications · Languages · Interests</summary><div class="sec-body" id="s-lists"></div></details>
+  <details class="sec"><summary>Changelog (history)</summary><div class="sec-body" id="s-changelog"></div></details>
+</div>
+
+<div class="savebar">
+  <span id="status"></span>
+  <span class="sp"></span>
+  <button class="btn ghost" id="preview-json">Preview JSON</button>
+  <button class="btn" id="save">💾 Save &amp; Export resume-data.json</button>
+</div>
+
+<dialog id="dlg">
+  <div class="dlg-body">
+    <h3>Log this update</h3>
+    <p>Briefly describe what you changed and where. This is added to the changelog with today's date.</p>
+    <label>What changed</label>
+    <input type="text" id="dlg-what" placeholder="e.g. Added new journal paper; updated current role">
+    <label>Where (section)</label>
+    <input type="text" id="dlg-where" placeholder="e.g. Publications, Experience">
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:18px;">
+      <button class="btn ghost" id="dlg-cancel">Cancel</button>
+      <button class="btn" id="dlg-ok">Save &amp; Download</button>
+    </div>
+  </div>
+</dialog>
+
+<script>
+"use strict";
+let DATA = null;
+
+const $ = s => document.querySelector(s);
+const el = (tag, props={}, html) => { const e=document.createElement(tag); Object.assign(e, props); if(html!=null) e.innerHTML=html; return e; };
+const today = () => new Date().toISOString().slice(0,10);
+
+/* ---------- field builders ---------- */
+function textField(label, value, onChange, opts={}){
+  const wrap = el("div");
+  wrap.appendChild(el("label", {}, label));
+  const node = opts.area ? el("textarea") : el("input", {type:"text"});
+  node.value = value==null ? "" : value;
+  if(opts.placeholder) node.placeholder = opts.placeholder;
+  node.addEventListener("input", ()=>onChange(node.value));
+  wrap.appendChild(node);
+  if(opts.hint) wrap.appendChild(el("div",{className:"pillhint"}, opts.hint));
+  return wrap;
+}
+function repeater(container, arr, makeCard, makeBlank, addLabel){
+  container.innerHTML = "";
+  arr.forEach((item, i)=>{
+    const card = el("div",{className:"card"});
+    const del = el("button",{className:"del"},"✕ remove");
+    del.addEventListener("click", ()=>{ arr.splice(i,1); repeater(container, arr, makeCard, makeBlank, addLabel); });
+    card.appendChild(del);
+    makeCard(card, item, i);
+    container.appendChild(card);
+  });
+  const add = el("button",{className:"add"}, "+ "+addLabel);
+  add.addEventListener("click", ()=>{ arr.push(makeBlank()); repeater(container, arr, makeCard, makeBlank, addLabel); });
+  container.appendChild(add);
+}
+
+/* ---------- section renderers ---------- */
+function renderAll(){
+  if(!DATA) return;
+  $("#hmeta").textContent = "Last updated: " + (DATA.meta?.lastUpdated || "—");
+
+  /* header */
+  const H = DATA.header;
+  const sh = $("#s-header"); sh.innerHTML="";
+  sh.appendChild(textField("Name", H.name, v=>H.name=v));
+  sh.appendChild(textField("Title line", H.title, v=>H.title=v, {area:true}));
+  const r1 = el("div",{className:"row"});
+  const c1=el("div"), c2=el("div");
+  c1.appendChild(textField("Location", H.location, v=>H.location=v));
+  c2.appendChild(textField("Email", H.email, v=>H.email=v));
+  r1.append(c1,c2); sh.appendChild(r1);
+  sh.appendChild(el("label",{},"Links"));
+  const linkBox = el("div"); sh.appendChild(linkBox);
+  repeater(linkBox, H.links, (card,item)=>{
+    const r=el("div",{className:"row"});
+    const a=el("div"),b=el("div");
+    a.appendChild(textField("Label", item.label, v=>item.label=v));
+    b.appendChild(textField("URL", item.url, v=>item.url=v));
+    r.append(a,b); card.appendChild(r);
+  }, ()=>({label:"",url:""}), "Add link");
+
+  /* summary */
+  const S = DATA.summary; const ss=$("#s-summary"); ss.innerHTML="";
+  ss.appendChild(textField("Summary text", S.text, v=>S.text=v, {area:true}));
+  ss.appendChild(el("label",{},"Counters"));
+  const cbox=el("div"); ss.appendChild(cbox);
+  repeater(cbox, S.counts, (card,item)=>{
+    const r=el("div",{className:"row"});
+    const a=el("div"),b=el("div");
+    a.appendChild(textField("Value", item.value, v=>item.value=v));
+    b.appendChild(textField("Label", item.label, v=>item.label=v));
+    r.append(a,b); card.appendChild(r);
+  }, ()=>({value:"",label:""}), "Add counter");
+
+  /* education */
+  repeater($("#s-education"), DATA.education, (card,item)=>{
+    const r=el("div",{className:"row"}); const a=el("div"),b=el("div");
+    a.appendChild(textField("Degree / title", item.title, v=>item.title=v));
+    b.appendChild(textField("When", item.when, v=>item.when=v));
+    r.append(a,b); card.appendChild(r);
+    card.appendChild(textField("Institution", item.org, v=>item.org=v));
+    card.appendChild(textField("Description", item.desc, v=>item.desc=v, {area:true}));
+  }, ()=>({title:"",org:"",when:"",desc:""}), "Add education entry");
+
+  /* experience */
+  repeater($("#s-experience"), DATA.experience, (card,item)=>{
+    const r=el("div",{className:"row"}); const a=el("div"),b=el("div");
+    a.appendChild(textField("Role", item.role, v=>item.role=v));
+    b.appendChild(textField("When", item.when, v=>item.when=v));
+    r.append(a,b); card.appendChild(r);
+    card.appendChild(textField("Organization", item.org, v=>item.org=v));
+    card.appendChild(textField("Description", item.desc, v=>item.desc=v, {area:true}));
+  }, ()=>({role:"",org:"",when:"",desc:""}), "Add experience entry");
+
+  /* publications */
+  const P = DATA.publications; const sp=$("#s-publications"); sp.innerHTML="";
+  sp.appendChild(textField("Metrics / note line", P.metrics, v=>P.metrics=v, {area:true}));
+  sp.appendChild(el("label",{},"Selected items"));
+  sp.appendChild(el("div",{className:"pillhint"},"Basic HTML allowed: &lt;b&gt;, &lt;i&gt;, &lt;a href&gt;, and &lt;span class=\"r-pill g\"&gt;Best Paper&lt;/span&gt; for badges."));
+  const pbox=el("div"); sp.appendChild(pbox);
+  repeater(pbox, P.items, (card,item,i)=>{
+    card.appendChild(textField("Item "+(i+1), item, v=>P.items[i]=v, {area:true}));
+  }, ()=>"", "Add publication");
+
+  /* patents */
+  const sPat=$("#s-patents"); sPat.innerHTML="";
+  sPat.appendChild(el("div",{className:"pillhint"},"Use &lt;span class=\"r-pill g\"&gt;Granted&lt;/span&gt; or &lt;span class=\"r-pill\"&gt;Published&lt;/span&gt; for status badges."));
+  const patbox=el("div"); sPat.appendChild(patbox);
+  repeater(patbox, DATA.patents, (card,item,i)=>{
+    card.appendChild(textField("Patent "+(i+1), item, v=>DATA.patents[i]=v, {area:true}));
+  }, ()=>"", "Add patent");
+
+  /* awards */
+  const awbox=el("div"); $("#s-awards").innerHTML=""; $("#s-awards").appendChild(awbox);
+  repeater(awbox, DATA.awards, (card,item,i)=>{
+    card.appendChild(textField("Award "+(i+1), item, v=>DATA.awards[i]=v, {area:true}));
+  }, ()=>"", "Add award");
+
+  /* simple list sections */
+  const sl=$("#s-lists"); sl.innerHTML="";
+  [["skills","Skills"],["research","Research Interests"],["certifications","Certifications"],
+   ["languages","Languages"],["interests","Interests"]].forEach(([key,label])=>{
+    sl.appendChild(el("label",{},label));
+    sl.appendChild(el("div",{className:"pillhint"},"One entry per line."));
+    const ta=el("textarea"); ta.value=(DATA[key]||[]).join("\n"); ta.style.minHeight="90px";
+    ta.addEventListener("input", ()=>{ DATA[key]=ta.value.split("\n").map(s=>s.trim()).filter(Boolean); });
+    sl.appendChild(ta);
+  });
+
+  /* changelog */
+  renderChangelog();
+}
+
+function renderChangelog(){
+  const cl = $("#s-changelog"); cl.innerHTML="";
+  const box = el("div",{className:"changelog"});
+  const list = (DATA.meta?.changelog || []).slice().reverse();
+  if(!list.length) box.appendChild(el("div",{className:"pillhint"},"No changes logged yet."));
+  list.forEach(e=>{
+    box.appendChild(el("div",{className:"e"},
+      `<span class="d">${e.date}</span> — <span class="w">[${e.where||"—"}]</span> ${e.what||""}`));
+  });
+  cl.appendChild(box);
+}
+
+/* ---------- load / save ---------- */
+function loadData(d){ DATA = d; renderAll(); $("#status").textContent="Loaded ✓"; }
+
+$("#load-file").addEventListener("click", ()=>$("#file-in").click());
+$("#file-in").addEventListener("change", e=>{
+  const f=e.target.files[0]; if(!f) return;
+  const rd=new FileReader();
+  rd.onload=()=>{ try{ loadData(JSON.parse(rd.result)); }catch(err){ alert("Invalid JSON: "+err.message); } };
+  rd.readAsText(f);
+});
+$("#load-default").addEventListener("click", ()=>{
+  fetch("resume-data.json",{cache:"no-cache"}).then(r=>r.json()).then(loadData)
+    .catch(()=>loadData(JSON.parse(JSON.stringify(window.__BAKED__||{}))));
+});
+
+$("#preview-json").addEventListener("click", ()=>{
+  if(!DATA) return alert("Load data first.");
+  const w=window.open("","_blank");
+  w.document.write("<pre style='white-space:pre-wrap;font:12px monospace;padding:16px'>"+
+    JSON.stringify(DATA,null,2).replace(/</g,"&lt;")+"</pre>");
+});
+
+const dlg = $("#dlg");
+$("#save").addEventListener("click", ()=>{ if(!DATA) return alert("Load data first."); $("#dlg-what").value=""; $("#dlg-where").value=""; dlg.showModal(); });
+$("#dlg-cancel").addEventListener("click", ()=>dlg.close());
+$("#dlg-ok").addEventListener("click", ()=>{
+  const what=$("#dlg-what").value.trim(), where=$("#dlg-where").value.trim();
+  if(!what){ alert("Please describe what changed."); return; }
+  DATA.meta = DATA.meta || {changelog:[]};
+  DATA.meta.changelog = DATA.meta.changelog || [];
+  DATA.meta.changelog.push({date:today(), what, where: where||"—"});
+  DATA.meta.lastUpdated = today();
+  dlg.close();
+  const blob=new Blob([JSON.stringify(DATA,null,2)],{type:"application/json"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a"); a.href=url; a.download="resume-data.json"; a.click();
+  setTimeout(()=>URL.revokeObjectURL(url),4000);
+  renderAll();
+  $("#status").textContent="Exported ✓  — now commit resume-data.json to your repo.";
+});
+
+/* auto-load on open */
+window.addEventListener("DOMContentLoaded", ()=>{
+  fetch("resume-data.json",{cache:"no-cache"}).then(r=>{ if(!r.ok) throw 0; return r.json(); })
+    .then(loadData)
+    .catch(()=>{ $("#status").textContent="Tip: click “Load JSON file…” to open your resume-data.json"; });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+{
+  "meta": {
+    "lastUpdated": "2026-06-12",
+    "changelog": [
+      { "date": "2026-06-12", "what": "Initial résumé data published (split from inline content).", "where": "All sections" }
+    ]
+  },
+  "header": {
+    "name": "Dr. Sanket Salvi",
+    "title": "Assistant Professor (Level 11), MIT-WPU · Ph.D. (IT, NIT Karnataka) · IoT / Li-Fi / AI / Full-Stack",
+    "location": "Pimpri-Chinchwad, Pune, India",
+    "email": "sanketsalvi.salvi@gmail.com",
+    "links": [
+      { "label": "Website", "url": "https://onlysanket.in" },
+      { "label": "GitHub", "url": "https://github.com/SanketSalviNITK" },
+      { "label": "LinkedIn", "url": "https://www.linkedin.com/in/onlysanket" },
+      { "label": "Instagram", "url": "https://www.instagram.com/oneandonlysanket/" }
+    ]
+  },
+  "summary": {
+    "text": "Academician and technologist with 12 years spanning teaching and research (6 + 6). Ph.D. in Information Technology (NIT Karnataka), specializing in Visible Light Communication (Li-Fi) for indoor IoT. Work spans IoT systems, AI/ML, computer vision, AR/VR & digital twins, healthcare informatics, and full-stack development. 47+ peer-reviewed publications, 6 patents, and multiple best-paper and best-project awards.",
+    "counts": [
+      { "value": "7", "label": "Journals" },
+      { "value": "32", "label": "Conferences" },
+      { "value": "8", "label": "Book Chapters" },
+      { "value": "6", "label": "Patents" },
+      { "value": "11", "label": "h-index" }
+    ]
+  },
+  "education": [
+    { "title": "Ph.D., Information Technology", "org": "National Institute of Technology Karnataka", "when": "2017 – 2023", "desc": "Thesis: efficient modulation techniques for VLC/Li-Fi in indoor IoT environments (advisor: Dr. Geetha V)." },
+    { "title": "M.Tech., Computer Network Engineering", "org": "Visvesvaraya Technological University (VTU)", "when": "2012 – 2014", "desc": "Thesis: ECK (Encryption-Compression-Key) data-security framework for cloud IaaS." },
+    { "title": "B.E., Computer Science & Engineering", "org": "University of Pune", "when": "2007 – 2012", "desc": "Thesis: word-set hierarchical clustering for large datasets." }
+  ],
+  "experience": [
+    { "role": "Assistant Professor (Level 11)", "org": "MIT World Peace University, Pune", "when": "01/2026 – present", "desc": "Teaching AR/VR; runs the Full-Stack (MERN) development lab." },
+    { "role": "Post-Doctoral Researcher", "org": "University of Central Florida, USA", "when": "01/2025 – 10/2025", "desc": "Center for Decision Support Systems & Informatics — Healthcare IoT & AI (four journal papers, 2025)." },
+    { "role": "Assistant Professor", "org": "Symbiosis Institute of Technology, Pune", "when": "08/2024 – 12/2024", "desc": "Member of the Departmental Examination and Research committees." },
+    { "role": "Assistant Professor", "org": "MIT World Peace University, Pune", "when": "10/2022 – 07/2024", "desc": "DAA, C, Cloud & Blockchain for Data Analytics, AI & Expert Systems, IoT Lab, competitive coding." },
+    { "role": "Research Scholar (Ph.D.)", "org": "NIT Karnataka", "when": "07/2017 – 10/2022", "desc": "Visible Light Communication / Li-Fi research." },
+    { "role": "Assistant Professor", "org": "Nitte Meenakshi Institute of Technology, Bengaluru", "when": "02/2015 – 03/2022", "desc": "Led UNESCO/JNCASR/NGO-funded projects." },
+    { "role": "Assistant Professor & Asst. Director, R&D", "org": "MPSE, Nanded", "when": "07/2014 – 02/2015", "desc": "" }
+  ],
+  "publications": {
+    "metrics": "Citation metrics — Google Scholar h-index 11 · i10-index 13 · Scopus h-index 8. Full list of 47+ in the downloadable résumé.",
+    "items": [
+      "Salvi & Geetha — <b>A Nested-Texture Image-Pattern Optical Camera Communication</b>, <i>IEEE Access</i> 2022. <a href=\"https://ieeexplore.ieee.org/document/9915602\" target=\"_blank\" rel=\"noopener\">ieee.org</a>",
+      "Salvi & Vasantha — <b>Hybrid FSK + PWM Modulation for Li-Fi</b>, <i>Computation</i> 2022. <a href=\"https://www.mdpi.com/2079-3197/10/7/110\" target=\"_blank\" rel=\"noopener\">mdpi.com</a>",
+      "Salvi et al. — <b>Digital Convergence in Dental Informatics: AI, IoT, Digital Twins & LLMs</b>, <i>Electronics</i> 2025. <a href=\"https://www.mdpi.com/2079-9292/14/16/3278\" target=\"_blank\" rel=\"noopener\">mdpi.com</a>",
+      "Salvi, Garg, Gurupur — <b>Stage-Wise IoT Solutions for Alzheimer's Disease</b>, <i>Sensors</i> 2025. <a href=\"https://www.mdpi.com/1424-8220/25/17/5252\" target=\"_blank\" rel=\"noopener\">mdpi.com</a>",
+      "<b>IoTaaS: An IoT-as-a-Service Framework for Virtual Experimentation</b> — <span class=\"r-pill g\">Best Paper</span> AIR 2025, Nazarbayev University (Springer).",
+      "<b>Continuous Sign-Language Recognition with Leap Motion</b> — <span class=\"r-pill g\">Best Paper</span> IEEE AIC 2024. <a href=\"https://doi.org/10.1109/AIC61668.2024.10730854\" target=\"_blank\" rel=\"noopener\">doi</a>"
+    ]
+  },
+  "patents": [
+    "<span class=\"r-pill g\">Granted</span> Li-Fi for Secured Wi-Fi Access during On-Campus Online Exams — South Africa (CIPC) 2023/02929 (2023).",
+    "<span class=\"r-pill g\">Granted</span> Li-Fi for Secured Wi-Fi Access during On-Campus Online Exams — India 202424013857 (2024).",
+    "<span class=\"r-pill\">Published</span> Teleoperated Robotic System — India 202421097626 (2025).",
+    "<span class=\"r-pill\">Published</span> AI-Powered Content Creation in Automated Marketing — India 202441025040 (2024).",
+    "<span class=\"r-pill\">Published</span> Integrated Smart Water Management System — India 202441068913 (2024).",
+    "<span class=\"r-pill\">Filed</span> Wireless Sensor-Based Railway Track Crack Detection (design) — India 464849-001 (2025)."
+  ],
+  "awards": [
+    "<b>Best Paper</b> — AIR 2025, Nazarbayev University, Kazakhstan (Springer).",
+    "<b>Best Paper</b> — IEEE AIC 2024, India.",
+    "<b>Best Paper</b> — AITA 2024, IFHE University, India.",
+    "<b>Best Project</b> — Unisys Cloud 20/20, 2017 (<i>Advhan</i>, crowd-sourced road-health monitoring).",
+    "<b>Best Project</b> — Aavishkar 2017, REVA University (<i>AgrOne</i>, computer-vision crop-health drone).",
+    "<b>Funded</b> — UNESCO via KSCST: DIY Rainwater Harvesting Advisor, ₹1,50,000 (2016)."
+  ],
+  "skills": ["Full-Stack (MERN)", "IoT Systems", "Li-Fi / VLC", "Machine Learning", "Computer Vision", "AR / VR & Digital Twins", "Cloud Computing", "Python", "Java / J2EE", "Android", "Big Data / Data Science", "Blockchain", "MATLAB / Image Processing", "Technical Writing"],
+  "research": ["AI / ML", "Digital Twins", "AR / VR", "Healthcare IoT", "Li-Fi / VLC", "Autonomous EVs", "Vehicle Platooning", "P2P Energy Trading", "Quantum Computing", "Blockchain"],
+  "certifications": ["edX · Applied Local LLMs", "Google · Industrial IoT on GCP", "Google · AR & ARCore", "Microsoft · Data Science", "Microsoft+LinkedIn · Copilot", "Wipro · Global Java Trainer", "CloudXLab · ML Specialization", "CITI · Human Subjects Research", "DRPC · Certified Drone Pilot", "LinkedIn · Prompt Engineering (GenAI)", "WES · Verified Intl. Qualifications"],
+  "languages": ["Marathi — Native", "Hindi — Fluent", "English — C1"],
+  "interests": ["Guitar & Tabla", "Dance", "Music Editing", "DIY Electronics", "Volunteering", "Cooking", "Surfing", "Travelling"]
+}
