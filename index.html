@@ -146,19 +146,21 @@
   #start:hover:not(:disabled),#start:focus-visible{background:var(--cyan);color:var(--ink);outline:none;}
   #start:disabled{opacity:.55;cursor:wait;}
 
-  /* ---------- C Lab Autograder link (landing page only) ---------- */
-  #autograder-link{position:absolute;top:16px;right:16px;z-index:1;display:inline-flex;align-items:center;gap:9px;
-    background:rgba(8,12,18,.8);border:1px solid var(--cyan);color:var(--cyan);text-decoration:none;
-    font:700 11px/1 "Courier New",monospace;letter-spacing:.2em;padding:10px 14px;
-    animation:ag-flash 1.6s ease-in-out infinite;transition:background .15s,color .15s;}
-  #autograder-link i{width:8px;height:8px;border-radius:50%;background:var(--warn);
+  /* ---------- Student links: Student Hub + C Lab Autograder (landing page only) ---------- */
+  #student-links{position:absolute;top:16px;right:16px;z-index:1;display:flex;flex-wrap:wrap;justify-content:flex-end;gap:10px;}
+  .student-link{display:inline-flex;align-items:center;gap:9px;
+    background:rgba(8,12,18,.8);border:1px solid rgba(70,226,255,.6);color:var(--cyan);text-decoration:none;
+    font:700 11px/1 "Courier New",monospace;letter-spacing:.2em;padding:10px 14px;transition:background .15s,color .15s;}
+  .student-link i{width:8px;height:8px;border-radius:50%;background:var(--warn);
     box-shadow:0 0 8px var(--warn);animation:blink 1.4s infinite;}
-  #autograder-link:hover,#autograder-link:focus-visible{background:var(--cyan);color:var(--ink);outline:none;}
+  #hub-link{border-color:var(--cyan);animation:ag-flash 1.6s ease-in-out infinite;}
+  .student-link:hover,.student-link:focus-visible{background:var(--cyan);color:var(--ink);outline:none;}
   @keyframes ag-flash{
     0%,100%{box-shadow:0 0 6px rgba(70,226,255,.35);border-color:rgba(70,226,255,.6);}
     50%{box-shadow:0 0 0 4px rgba(70,226,255,.16),0 0 24px rgba(70,226,255,.9);border-color:var(--cyan);}}
-  @media (max-width:560px){#autograder-link{top:10px;right:10px;padding:8px 10px;font-size:10px;letter-spacing:.14em;}}
-  @media (prefers-reduced-motion:reduce){#autograder-link,#autograder-link i{animation:none;}}
+  @media (max-width:560px){#student-links{top:10px;right:10px;left:10px;gap:6px;}
+    .student-link{padding:8px 10px;font-size:10px;letter-spacing:.14em;}}
+  @media (prefers-reduced-motion:reduce){#hub-link,.student-link i{animation:none;}}
 
   /* ---------- scroll hint ---------- */
   #hint{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);z-index:30;opacity:0;
@@ -360,8 +362,12 @@
 </div>
 
 <div class="panel" id="intro">
-  <a id="autograder-link" href="https://c-autograder-portal.pages.dev" target="_blank" rel="noopener"
-     title="Students: submit C lab assignments for automatic grading"><i></i>C LAB AUTOGRADER ↗</a>
+  <nav id="student-links" aria-label="For students">
+    <a id="hub-link" class="student-link" href="https://students.onlysanket.in/students.html" target="_blank" rel="noopener"
+       title="Students: syllabus, notes, animations, quizzes and question banks"><i></i>STUDENT HUB ↗</a>
+    <a id="autograder-link" class="student-link" href="https://students.onlysanket.in/" target="_blank" rel="noopener"
+       title="Students: submit C lab assignments for automatic grading">C LAB AUTOGRADER ↗</a>
+  </nav>
   <div class="frame">
     <div class="stamp">MISSING — CASE OPEN</div>
     <h1>THE PROFESSOR'S DIGITAL TRANSCENDENCE<small>OFFICE 11-B · 11:47 PM · RAIN</small></h1>
