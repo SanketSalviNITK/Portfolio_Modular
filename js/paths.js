@@ -14,7 +14,10 @@
 
   fetch(`data/${page}.json`, { cache: "no-cache" })
     .then((r) => (r.ok ? r.json() : Promise.reject()))
-    .then((d) => {
+    .then(async (d) => {
+      if (page === "research") {                              // the full publication list, generated from the workbook
+        d.publications = await fetch("data/publications.json", { cache: "no-cache" }).then((r) => (r.ok ? r.json() : null)).catch(() => null);
+      }
       main.innerHTML = page === "research" ? research(d) : consulting(d);
       wire(d);
       if (location.hash) document.querySelector(location.hash)?.scrollIntoView();
@@ -41,12 +44,12 @@
         </div>
       </section>
       <nav class="secnav" aria-label="Sections of this page">
-        ${(d.activeProjects || []).length ? `<a href="#active">Active research</a>` : ""}<a href="#papers-sec">Papers</a><a href="#patents">Patents</a><a href="#areas">Areas</a><a href="#join">Join</a>
+        ${(d.activeProjects || []).length ? `<a href="#active">Active research</a>` : ""}<a href="#papers-sec">Papers</a>${d.publications ? `<a href="#all-pubs">All publications</a>` : ""}<a href="#patents">Patents</a><a href="#areas">Areas</a><a href="#join">Join</a>
       </nav>
       <div class="metrics">${d.metrics.map((m) => `<div class="metric"><b>${esc(m.value)}</b><span>${esc(m.label)}</span></div>`).join("")}</div>
 
       ${active(d)}
-      <h2 id="papers-sec">Selected papers <span>${d.featured.length} highlighted · full list of 47+ in the résumé</span></h2>
+      <h2 id="papers-sec">Selected papers <span>${d.featured.length} highlighted${d.publications ? " · the full list is below" : " · full list of 47+ in the résumé"}</span></h2>
       <div class="chips" role="group" aria-label="Filter by research area">
         <button class="chip" aria-pressed="true" data-area="">All</button>
         ${[...new Set(d.featured.map((p) => p.area))].map((a) => `<button class="chip" aria-pressed="false" data-area="${esc(a)}">${esc(a)}</button>`).join("")}
@@ -61,6 +64,7 @@
         </article>`).join("")}
       </div>
 
+      ${allPubs(d.publications)}
       <h2 id="patents">Patents <span>${d.patents.length}</span></h2>
       <div class="rows">${d.patents.map((p) => `
         <div class="row"><span class="pill ${status[p.status] || ""}">${esc(p.status)}</span><span>${esc(p.title)}</span><span class="where">${esc(p.where)} · ${esc(p.year)}</span></div>`).join("")}
@@ -72,6 +76,43 @@
       ${joinForm(d)}
       <p class="note" style="margin-top:18px"><a href="assets/resume.pdf" target="_blank" rel="noopener">Full publication list (résumé, PDF) ↗</a></p>
       <div class="links">${d.profiles.filter((p) => p.url).map((p) => ext(p.url, p.label + " ↗")).join("")}</div>`;
+  }
+
+  // every publication ticked "On Website" in the workbook: tabs by type, a topic filter and a search box
+  function allPubs(P){
+    if (!P || !P.items || !P.items.length) return "";
+    const items = P.items, types = Object.keys(P.counts || {});
+    const topics = [...new Set(items.flatMap((x) => x.topics || []))].sort();
+    const short = { "Journal": "J", "Conference": "C", "Book chapter": "B" };
+    const plural = { "Journal": "journal papers", "Conference": "conference papers", "Book chapter": "book chapters" };
+    const years = [...new Set(items.map((x) => x.year || "—"))];
+    return `
+      <h2 id="all-pubs">All publications <span>${items.length} · ${types.map((t) => `${P.counts[t]} ${plural[t] || t}`).join(" · ")}</span></h2>
+      <div class="pub-tools">
+        <div class="chips" role="group" aria-label="Type of publication">
+          <button class="chip" aria-pressed="true" data-type="">All ${items.length}</button>
+          ${types.map((t) => `<button class="chip" aria-pressed="false" data-type="${esc(t)}">${esc(plural[t] ? plural[t][0].toUpperCase() + plural[t].slice(1) : t)} ${P.counts[t]}</button>`).join("")}
+        </div>
+        <div class="pub-find">
+          <select id="pub-topic" aria-label="Topic"><option value="">All topics</option>
+            ${topics.map((t) => `<option>${esc(t)}</option>`).join("")}</select>
+          <input id="pub-q" type="search" placeholder="Search title, venue or co-author" aria-label="Search publications">
+        </div>
+      </div>
+      <p class="note" id="pub-count" aria-live="polite"></p>
+      <div class="pubs" id="pubs">${years.map((y) => `
+        <section class="pub-year" data-year="${esc(y)}"><h3>${esc(y)}</h3>${items.filter((x) => (x.year || "—") === y).map((x) => {
+          const people = x.authors || (x.with ? `with ${x.with}` : "");
+          const meta = [x.venue, x.details, x.indexed, people, x.role].filter(Boolean).map(esc).join(" · ");
+          const text = [x.title, x.venue, x.with, x.authors, x.year].join(" ").toLowerCase();
+          return `<div class="pub" data-type="${esc(x.type)}" data-topics="${esc((x.topics || []).join("|"))}" data-text="${esc(text)}">
+            <span class="pill" title="${esc(x.type)}">${short[x.type] || "•"}</span>
+            <div><div class="pt">${x.link ? `<a href="${esc(x.link)}" target="_blank" rel="noopener">${esc(x.title)} ↗</a>` : esc(x.title)}</div>
+              <div class="pm">${meta}</div></div>
+            <div class="ptags">${(x.topics || []).map((t) => `<span>${esc(t)}</span>`).join("")}</div>
+          </div>`;
+        }).join("")}</section>`).join("")}
+      </div>`;
   }
 
   // ongoing projects, each with who is wanted; hidden until data/research.json lists some
@@ -168,6 +209,27 @@
       const sel = form && form.elements.project;
       if (sel) sel.value = a.dataset.project;
     }));
+    const pubs = main.querySelector("#pubs");
+    if (pubs) {
+      const typeChips = main.querySelectorAll(".chip[data-type]"), topic = main.querySelector("#pub-topic"), q = main.querySelector("#pub-q");
+      const count = main.querySelector("#pub-count"), total = pubs.querySelectorAll(".pub").length;
+      const apply = () => {
+        const type = main.querySelector('.chip[data-type][aria-pressed="true"]').dataset.type, tp = topic.value;
+        const words = q.value.toLowerCase().split(/\s+/).filter(Boolean);
+        let shown = 0;
+        pubs.querySelectorAll(".pub").forEach((row) => {
+          const ok = (!type || row.dataset.type === type) && (!tp || row.dataset.topics.split("|").includes(tp))
+            && words.every((w) => row.dataset.text.includes(w));
+          row.hidden = !ok; if (ok) shown++;
+        });
+        pubs.querySelectorAll(".pub-year").forEach((y) => { y.hidden = !y.querySelector(".pub:not([hidden])"); });
+        count.textContent = shown === total ? `Showing all ${total}.` : shown ? `Showing ${shown} of ${total}.` : "No publications match. Try another word or topic.";
+      };
+      typeChips.forEach((c) => c.addEventListener("click", () => { typeChips.forEach((x) => x.setAttribute("aria-pressed", String(x === c))); apply(); }));
+      topic.addEventListener("change", apply);
+      q.addEventListener("input", apply);
+      apply();
+    }
     const nav = main.querySelector(".secnav");
     if (nav && "IntersectionObserver" in window) {           // highlight the section in view
       const links = [...nav.querySelectorAll("a")];
