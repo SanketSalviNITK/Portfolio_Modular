@@ -30,7 +30,7 @@
     });
 
   // ---------- RESEARCH: hero + map, numbers, then one tab at a time ----------
-  const TABS = [["active", "Active research"], ["pubs", "Publications"], ["patents", "Patents"], ["join", "Join"]];
+  const TABS = [["pubs", "Publications"], ["patents", "Patents"], ["join", "Join"]];
   const TYPE = { "Journal": "journal", "Conference": "conf", "Book chapter": "chapter" };
   // a highlighted paper's area -> the topic tags used by the full list, so one topic filter covers both
   const AREA_TOPICS = { "IoT Systems": ["IoT"], "Healthcare IoT": ["Healthcare", "IoT"] };
@@ -45,7 +45,7 @@
           <span class="stamp">CASE FILE 01 · RESEARCH</span>
           <h1>RESEARCH</h1>
           <p class="lead">${esc(d.intro)}</p>
-          <div class="btns" style="margin-top:22px"><a class="btn primary" href="#tab=join" data-go="join">JOIN MY RESEARCH</a><a class="btn" href="#tab=active" data-go="active">ACTIVE PROJECTS</a><a class="btn" href="#tab=pubs" data-go="pubs">PUBLICATIONS</a></div>
+          <div class="btns" style="margin-top:22px"><a class="btn primary" href="#tab=join" data-go="join">JOIN MY RESEARCH</a><a class="btn" href="#active" data-go="active">ACTIVE PROJECTS</a><a class="btn" href="#tab=pubs" data-go="pubs">PUBLICATIONS</a></div>
         </div>
         <div class="map3d" id="map3d" role="img" aria-label="Map of research areas with their active projects and papers. The same items are in the tabs below.">
           <div class="map-legend"><i class="a"></i>Area <i class="p"></i>Active project <i class="r"></i>Paper<span>drag to turn · click to open</span></div>
@@ -53,15 +53,16 @@
       </section>
       <div class="metrics">${d.metrics.map((m) => `<div class="metric"><b>${esc(m.value)}</b><span>${esc(m.label)}</span></div>`).join("")}</div>
 
-      <div class="tabs" role="tablist" aria-label="Research sections" id="tabs">${TABS.filter(([k]) => k !== "active" || n.active).map(([k, label]) => `
+      ${n.active ? `
+      <section class="active-sec" id="active" aria-labelledby="active-h">
+        <h2 id="active-h">Active research <span>${n.active} ongoing · open to new members</span></h2>
+        ${active(d)}
+        <div class="chips areas-row" aria-label="All research areas">${d.areas.map((a) => `<span class="chip" style="cursor:default">${esc(a)}</span>`).join("")}</div>
+      </section>` : ""}
+
+      <div class="tabs" role="tablist" aria-label="Research sections" id="tabs">${TABS.map(([k, label]) => `
         <button role="tab" id="tab-${k}" aria-controls="panel-${k}" aria-selected="false" data-tab="${k}">${label}${n[k] ? `<small>${n[k]}</small>` : ""}</button>`).join("")}
       </div>
-
-      <section class="panel" role="tabpanel" id="panel-active" aria-labelledby="tab-active" data-panel="active" hidden>
-        ${active(d)}
-        <h3 class="sub">All research areas</h3>
-        <div class="chips">${d.areas.map((a) => `<span class="chip" style="cursor:default">${esc(a)}</span>`).join("")}</div>
-      </section>
 
       <section class="panel" role="tabpanel" id="panel-pubs" aria-labelledby="tab-pubs" data-panel="pubs" hidden>
         ${pubTools(d, P)}
@@ -126,7 +127,6 @@
     const list = d.activeProjects || [];
     if (!list.length) return "";
     return `
-      <p class="note">${list.length} ongoing projects, open to new members.</p>
       <div class="grid">${list.map((p) => `
         <article class="card" id="proj-${slug(p.title)}" data-area="${esc(p.domain)}">
           <div class="meta"><span>${esc(p.domain)}</span>${p.status ? `<span class="pill ok">${esc(p.status)}</span>` : ""}</div>
@@ -221,7 +221,9 @@
   // tabs, the publication filters and "show more"; window.ResearchUI lets the 3D map drive them
   function wireResearch(d){
     const tabs = [...main.querySelectorAll("[role=tab]")], bar = main.querySelector("#tabs");
+    const sec = main.querySelector("#active");
     const show = (key, scroll) => {
+      if (key === "active") { if (sec && scroll) sec.scrollIntoView({ behavior: "smooth", block: "start" }); return; }   // always on the page
       if (!main.querySelector(`[data-panel="${key}"]`)) key = tabs[0].dataset.tab;
       tabs.forEach((t) => { const on = t.dataset.tab === key; t.setAttribute("aria-selected", String(on)); t.tabIndex = on ? 0 : -1; });
       main.querySelectorAll("[data-panel]").forEach((p) => { p.hidden = p.dataset.panel !== key; });
@@ -275,7 +277,7 @@
       // the map's area: filter the publications by it when it is a topic, else point at its projects
       area(name) {
         const chip = [...tchips].find((b) => b.dataset.topic === name || (AREA_TOPICS[name] || []).includes(b.dataset.topic));
-        const projects = main.querySelectorAll(`#panel-active .card[data-area="${CSS.escape(name)}"]`);
+        const projects = main.querySelectorAll(`#active .card[data-area="${CSS.escape(name)}"]`);
         if (chip) { press(segs, [...segs].find((b) => b.dataset.type === "")); press(tchips, chip); q.value = ""; apply(); show("pubs", "always"); }
         else if (projects.length) { show("active", "always"); projects.forEach(flash); }
         else show("active", "always");
@@ -295,7 +297,8 @@
     const h = decodeURIComponent(location.hash.slice(1));
     const legacy = { join: "join", active: "active", "papers-sec": "pubs", "all-pubs": "pubs", patents: "patents", areas: "active" };
     const key = h.startsWith("tab=") ? h.slice(4) : legacy[h];
-    show(key || "active", !!key && "always");
+    show("pubs");                                            // a tab is always open
+    if (key) show(key, "always");
   }
 
   function wireForm(form, d){

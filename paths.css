@@ -185,3 +185,7 @@ footer{max-width:1120px;margin:0 auto;padding:0 20px 40px;color:var(--dim);font-
 @media (max-width:560px){.tabs{margin-left:-20px;margin-right:-20px;padding-left:14px;padding-right:14px;}
   .chips.topics{flex-wrap:nowrap;overflow-x:auto;margin-right:-20px;padding-bottom:4px;}.chips.topics .chip{flex:none;}.segb{padding:9px 9px;font-size:11px;}#pub-q{width:100%;}.ncard{min-height:0;}}
 @media (prefers-reduced-motion:reduce){.panel,.ncard.in{animation:none;}.ncard:hover{transform:none;}}
+/* ---------- Research: active research, always on the page ---------- */
+.active-sec{margin-top:34px;scroll-margin-top:12px;}
+.active-sec h2{margin-top:0;}
+.areas-row{margin-top:16px;} .areas-row .chip{font-size:11px;padding:6px 9px;opacity:.85;}
