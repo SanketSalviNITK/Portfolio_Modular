@@ -9,11 +9,18 @@
   if(!main) return;
   const page = main.dataset.page;
   const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const slug = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
   const ext = (url, label) => `<a href="${esc(url)}" target="_blank" rel="noopener">${esc(label)}</a>`;
 
   fetch(`data/${page}.json`, { cache: "no-cache" })
     .then((r) => (r.ok ? r.json() : Promise.reject()))
-    .then((d) => { main.innerHTML = page === "research" ? research(d) : consulting(d); wire(d); if (location.hash) document.querySelector(location.hash)?.scrollIntoView(); })
+    .then((d) => {
+      main.innerHTML = page === "research" ? research(d) : consulting(d);
+      wire(d);
+      if (location.hash) document.querySelector(location.hash)?.scrollIntoView();
+      window.PAGE_DATA = d;                                   // research3d.js builds the 3D map from the same data
+      document.dispatchEvent(new CustomEvent("page:ready", { detail: d }));
+    })
     .catch(() => {
       main.innerHTML = `<section class="hero"><p class="lead">This page could not load its content. Please try again,
         or <a href="index.html">view the résumé</a> instead.</p></section>`;
@@ -22,22 +29,30 @@
   function research(d){
     const status = { Granted: "ok", Published: "", Filed: "" };
     return `
-      <section class="hero">
-        <span class="stamp">CASE FILE 01 · RESEARCH</span>
-        <h1>RESEARCH</h1>
-        <p class="lead">${esc(d.intro)}</p>
-        <div class="btns" style="margin-top:22px"><a class="btn primary" href="#join">JOIN MY RESEARCH</a></div>
+      <section class="hero hero-map">
+        <div class="hero-text">
+          <span class="stamp">CASE FILE 01 · RESEARCH</span>
+          <h1>RESEARCH</h1>
+          <p class="lead">${esc(d.intro)}</p>
+          <div class="btns" style="margin-top:22px"><a class="btn primary" href="#join">JOIN MY RESEARCH</a><a class="btn" href="#active">ACTIVE PROJECTS</a></div>
+        </div>
+        <div class="map3d" id="map3d" role="img" aria-label="Map of research areas with their active projects and papers. The same items are listed below.">
+          <div class="map-legend"><i class="a"></i>Area <i class="p"></i>Active project <i class="r"></i>Paper<span>drag to turn · click to open</span></div>
+        </div>
       </section>
+      <nav class="secnav" aria-label="Sections of this page">
+        ${(d.activeProjects || []).length ? `<a href="#active">Active research</a>` : ""}<a href="#papers-sec">Papers</a><a href="#patents">Patents</a><a href="#areas">Areas</a><a href="#join">Join</a>
+      </nav>
       <div class="metrics">${d.metrics.map((m) => `<div class="metric"><b>${esc(m.value)}</b><span>${esc(m.label)}</span></div>`).join("")}</div>
 
       ${active(d)}
-      <h2>Selected papers <span>${d.featured.length} highlighted · full list of 47+ in the résumé</span></h2>
+      <h2 id="papers-sec">Selected papers <span>${d.featured.length} highlighted · full list of 47+ in the résumé</span></h2>
       <div class="chips" role="group" aria-label="Filter by research area">
         <button class="chip" aria-pressed="true" data-area="">All</button>
         ${[...new Set(d.featured.map((p) => p.area))].map((a) => `<button class="chip" aria-pressed="false" data-area="${esc(a)}">${esc(a)}</button>`).join("")}
       </div>
       <div class="grid" id="papers">${d.featured.map((p) => `
-        <article class="card" data-area="${esc(p.area)}">
+        <article class="card" id="paper-${slug(p.title)}" data-area="${esc(p.area)}">
           <div class="meta"><span>${esc(p.year)}</span><span>·</span><span>${esc(p.area)}</span>${p.award ? `<span class="pill gold">${esc(p.award)}</span>` : ""}</div>
           <h3>${esc(p.title)}</h3>
           <div class="by">${esc(p.authors)} — <i>${esc(p.venue)}</i></div>
@@ -46,12 +61,12 @@
         </article>`).join("")}
       </div>
 
-      <h2>Patents <span>${d.patents.length}</span></h2>
+      <h2 id="patents">Patents <span>${d.patents.length}</span></h2>
       <div class="rows">${d.patents.map((p) => `
         <div class="row"><span class="pill ${status[p.status] || ""}">${esc(p.status)}</span><span>${esc(p.title)}</span><span class="where">${esc(p.where)} · ${esc(p.year)}</span></div>`).join("")}
       </div>
 
-      <h2>Research areas</h2>
+      <h2 id="areas">Research areas</h2>
       <div class="chips">${d.areas.map((a) => `<span class="chip" style="cursor:default">${esc(a)}</span>`).join("")}</div>
 
       ${joinForm(d)}
@@ -64,9 +79,9 @@
     const list = d.activeProjects || [];
     if (!list.length) return "";
     return `
-      <h2>Active research <span>${list.length} ongoing · open to new members</span></h2>
+      <h2 id="active">Active research <span>${list.length} ongoing · open to new members</span></h2>
       <div class="grid">${list.map((p) => `
-        <article class="card">
+        <article class="card" id="proj-${slug(p.title)}" data-area="${esc(p.domain)}">
           <div class="meta"><span>${esc(p.domain)}</span>${p.status ? `<span class="pill ok">${esc(p.status)}</span>` : ""}</div>
           <h3>${esc(p.title)}</h3>
           <p>${esc(p.summary)}</p>
@@ -153,6 +168,14 @@
       const sel = form && form.elements.project;
       if (sel) sel.value = a.dataset.project;
     }));
+    const nav = main.querySelector(".secnav");
+    if (nav && "IntersectionObserver" in window) {           // highlight the section in view
+      const links = [...nav.querySelectorAll("a")];
+      const spy = new IntersectionObserver((entries) => entries.forEach((e) => {
+        if (e.isIntersecting) links.forEach((l) => l.classList.toggle("on", l.getAttribute("href") === "#" + e.target.id));
+      }), { rootMargin: "-20% 0px -70% 0px" });
+      links.forEach((l) => { const t = main.querySelector(l.getAttribute("href")); if (t) spy.observe(t); });
+    }
     const chips = main.querySelectorAll(".chip[data-area]");
     chips.forEach((c) => c.addEventListener("click", () => {
       chips.forEach((x) => x.setAttribute("aria-pressed", String(x === c)));
