@@ -16,6 +16,8 @@
  *   4. Copy the Web app URL (ends in /exec) into data/research.json as
  *      "interestFormUrl", commit and push.
  *   "Anyone" only lets the site SEND a row; nobody can read the Sheet.
+ *   Check: open the /exec URL in a private browser window; it should show
+ *   {"ok":true,"status":"ready",...}. A sign-in page means access is not "Anyone".
  *   After editing this file, use Deploy ▸ Manage deployments ▸ Edit ▸
  *   New version, so the URL stays the same.
  **********************************************************************/
@@ -58,6 +60,11 @@ function doPost(e) {
   } catch (err) {
     return reply({ ok: false, error: "Something went wrong. Please email instead." });
   }
+}
+
+// Opening the /exec URL in a browser runs this: a quick check that the deployment works and which Sheet it writes to.
+function doGet() {
+  return reply({ ok: true, status: "ready", sheet: SpreadsheetApp.getActiveSpreadsheet().getName() });
 }
 
 function sheetFor() {
