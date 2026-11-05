@@ -20,7 +20,7 @@
       }
       main.innerHTML = page === "research" ? research(d) : consulting(d);
       wire(d);
-      if (location.hash) document.querySelector(location.hash)?.scrollIntoView();
+      if (page !== "research" && location.hash) { try { document.querySelector(location.hash)?.scrollIntoView(); } catch (e) { /* not an id */ } }
       window.PAGE_DATA = d;                                   // research3d.js builds the 3D map from the same data
       document.dispatchEvent(new CustomEvent("page:ready", { detail: d }));
     })
@@ -29,90 +29,96 @@
         or <a href="index.html">view the résumé</a> instead.</p></section>`;
     });
 
+  // ---------- RESEARCH: hero + map, numbers, then one tab at a time ----------
+  const TABS = [["active", "Active research"], ["pubs", "Publications"], ["patents", "Patents"], ["join", "Join"]];
+  const TYPE = { "Journal": "journal", "Conference": "conf", "Book chapter": "chapter" };
+  // a highlighted paper's area -> the topic tags used by the full list, so one topic filter covers both
+  const AREA_TOPICS = { "IoT Systems": ["IoT"], "Healthcare IoT": ["Healthcare", "IoT"] };
+
   function research(d){
     const status = { Granted: "ok", Published: "", Filed: "" };
+    const P = d.publications && d.publications.items ? d.publications : { items: [], counts: {} };
+    const n = { active: (d.activeProjects || []).length, pubs: P.items.length || d.featured.length, patents: d.patents.length };
     return `
       <section class="hero hero-map">
         <div class="hero-text">
           <span class="stamp">CASE FILE 01 · RESEARCH</span>
           <h1>RESEARCH</h1>
           <p class="lead">${esc(d.intro)}</p>
-          <div class="btns" style="margin-top:22px"><a class="btn primary" href="#join">JOIN MY RESEARCH</a><a class="btn" href="#active">ACTIVE PROJECTS</a></div>
+          <div class="btns" style="margin-top:22px"><a class="btn primary" href="#tab=join" data-go="join">JOIN MY RESEARCH</a><a class="btn" href="#tab=active" data-go="active">ACTIVE PROJECTS</a><a class="btn" href="#tab=pubs" data-go="pubs">PUBLICATIONS</a></div>
         </div>
-        <div class="map3d" id="map3d" role="img" aria-label="Map of research areas with their active projects and papers. The same items are listed below.">
+        <div class="map3d" id="map3d" role="img" aria-label="Map of research areas with their active projects and papers. The same items are in the tabs below.">
           <div class="map-legend"><i class="a"></i>Area <i class="p"></i>Active project <i class="r"></i>Paper<span>drag to turn · click to open</span></div>
         </div>
       </section>
-      <nav class="secnav" aria-label="Sections of this page">
-        ${(d.activeProjects || []).length ? `<a href="#active">Active research</a>` : ""}<a href="#papers-sec">Papers</a>${d.publications ? `<a href="#all-pubs">All publications</a>` : ""}<a href="#patents">Patents</a><a href="#areas">Areas</a><a href="#join">Join</a>
-      </nav>
       <div class="metrics">${d.metrics.map((m) => `<div class="metric"><b>${esc(m.value)}</b><span>${esc(m.label)}</span></div>`).join("")}</div>
 
-      ${active(d)}
-      <h2 id="papers-sec">Selected papers <span>${d.featured.length} highlighted${d.publications ? " · the full list is below" : " · full list of 47+ in the résumé"}</span></h2>
-      <div class="chips" role="group" aria-label="Filter by research area">
-        <button class="chip" aria-pressed="true" data-area="">All</button>
-        ${[...new Set(d.featured.map((p) => p.area))].map((a) => `<button class="chip" aria-pressed="false" data-area="${esc(a)}">${esc(a)}</button>`).join("")}
-      </div>
-      <div class="grid" id="papers">${d.featured.map((p) => `
-        <article class="card" id="paper-${slug(p.title)}" data-area="${esc(p.area)}">
-          <div class="meta"><span>${esc(p.year)}</span><span>·</span><span>${esc(p.area)}</span>${p.award ? `<span class="pill gold">${esc(p.award)}</span>` : ""}</div>
-          <h3>${esc(p.title)}</h3>
-          <div class="by">${esc(p.authors)} — <i>${esc(p.venue)}</i></div>
-          <p>${esc(p.summary)}</p>
-          ${p.link ? `<a class="go" href="${esc(p.link)}" target="_blank" rel="noopener">READ THE PAPER ↗</a>` : ""}
-        </article>`).join("")}
+      <div class="tabs" role="tablist" aria-label="Research sections" id="tabs">${TABS.filter(([k]) => k !== "active" || n.active).map(([k, label]) => `
+        <button role="tab" id="tab-${k}" aria-controls="panel-${k}" aria-selected="false" data-tab="${k}">${label}${n[k] ? `<small>${n[k]}</small>` : ""}</button>`).join("")}
       </div>
 
-      ${allPubs(d.publications)}
-      <h2 id="patents">Patents <span>${d.patents.length}</span></h2>
-      <div class="rows">${d.patents.map((p) => `
-        <div class="row"><span class="pill ${status[p.status] || ""}">${esc(p.status)}</span><span>${esc(p.title)}</span><span class="where">${esc(p.where)} · ${esc(p.year)}</span></div>`).join("")}
-      </div>
+      <section class="panel" role="tabpanel" id="panel-active" aria-labelledby="tab-active" data-panel="active" hidden>
+        ${active(d)}
+        <h3 class="sub">All research areas</h3>
+        <div class="chips">${d.areas.map((a) => `<span class="chip" style="cursor:default">${esc(a)}</span>`).join("")}</div>
+      </section>
 
-      <h2 id="areas">Research areas</h2>
-      <div class="chips">${d.areas.map((a) => `<span class="chip" style="cursor:default">${esc(a)}</span>`).join("")}</div>
+      <section class="panel" role="tabpanel" id="panel-pubs" aria-labelledby="tab-pubs" data-panel="pubs" hidden>
+        ${pubTools(d, P)}
+        <div class="ngrid" id="pubgrid">${pubCards(d, P)}</div>
+        <p class="nomatch" id="nomatch" hidden>No publications match. Try another topic or word.</p>
+        <div class="more"><button class="btn" id="pub-more" type="button" hidden></button></div>
+        <p class="note"><a href="assets/resume.pdf" target="_blank" rel="noopener">Full publication list (résumé, PDF) ↗</a></p>
+      </section>
 
-      ${joinForm(d)}
-      <p class="note" style="margin-top:18px"><a href="assets/resume.pdf" target="_blank" rel="noopener">Full publication list (résumé, PDF) ↗</a></p>
-      <div class="links">${d.profiles.filter((p) => p.url).map((p) => ext(p.url, p.label + " ↗")).join("")}</div>`;
+      <section class="panel" role="tabpanel" id="panel-patents" aria-labelledby="tab-patents" data-panel="patents" hidden>
+        <div class="rows">${d.patents.map((p) => `
+          <div class="row"><span class="pill ${status[p.status] || ""}">${esc(p.status)}</span><span>${esc(p.title)}</span><span class="where">${esc(p.where)} · ${esc(p.year)}</span></div>`).join("")}
+        </div>
+      </section>
+
+      <section class="panel" role="tabpanel" id="panel-join" aria-labelledby="tab-join" data-panel="join" hidden>
+        ${joinForm(d)}
+        <div class="links">${d.profiles.filter((p) => p.url).map((p) => ext(p.url, p.label + " ↗")).join("")}</div>
+      </section>`;
   }
 
-  // every publication ticked "On Website" in the workbook: tabs by type, a topic filter and a search box
-  function allPubs(P){
-    if (!P || !P.items || !P.items.length) return "";
-    const items = P.items, types = Object.keys(P.counts || {});
-    const topics = [...new Set(items.flatMap((x) => x.topics || []))].sort();
-    const short = { "Journal": "J", "Conference": "C", "Book chapter": "B" };
-    const plural = { "Journal": "journal papers", "Conference": "conference papers", "Book chapter": "book chapters" };
-    const years = [...new Set(items.map((x) => x.year || "—"))];
+  function pubTools(d, P){
+    const kinds = [["hl", "★ Highlights", d.featured.length], ["", "All", P.items.length],
+      ...Object.keys(P.counts || {}).map((t) => [t, { "Journal": "Journals", "Conference": "Conferences", "Book chapter": "Book chapters" }[t] || t, P.counts[t]])];
+    const topics = [...new Set([...P.items.flatMap((x) => x.topics || []), ...d.featured.flatMap((f) => AREA_TOPICS[f.area] || [f.area])])].sort();
     return `
-      <h2 id="all-pubs">All publications <span>${items.length} · ${types.map((t) => `${P.counts[t]} ${plural[t] || t}`).join(" · ")}</span></h2>
-      <div class="pub-tools">
-        <div class="chips" role="group" aria-label="Type of publication">
-          <button class="chip" aria-pressed="true" data-type="">All ${items.length}</button>
-          ${types.map((t) => `<button class="chip" aria-pressed="false" data-type="${esc(t)}">${esc(plural[t] ? plural[t][0].toUpperCase() + plural[t].slice(1) : t)} ${P.counts[t]}</button>`).join("")}
+      <div class="ptools">
+        <div class="seg" role="group" aria-label="Type">${kinds.filter((k) => k[2]).map(([k, label, c], i) => `
+          <button type="button" class="segb" data-type="${esc(k)}" aria-pressed="${i === 0}">${esc(label)} <small>${c}</small></button>`).join("")}
         </div>
-        <div class="pub-find">
-          <select id="pub-topic" aria-label="Topic"><option value="">All topics</option>
-            ${topics.map((t) => `<option>${esc(t)}</option>`).join("")}</select>
-          <input id="pub-q" type="search" placeholder="Search title, venue or co-author" aria-label="Search publications">
-        </div>
+        <input id="pub-q" type="search" placeholder="Search title, venue, co-author, year" aria-label="Search publications">
       </div>
-      <p class="note" id="pub-count" aria-live="polite"></p>
-      <div class="pubs" id="pubs">${years.map((y) => `
-        <section class="pub-year" data-year="${esc(y)}"><h3>${esc(y)}</h3>${items.filter((x) => (x.year || "—") === y).map((x) => {
-          const people = x.authors || (x.with ? `with ${x.with}` : "");
-          const meta = [x.venue, x.details, x.indexed, people, x.role].filter(Boolean).map(esc).join(" · ");
-          const text = [x.title, x.venue, x.with, x.authors, x.year].join(" ").toLowerCase();
-          return `<div class="pub" data-type="${esc(x.type)}" data-topics="${esc((x.topics || []).join("|"))}" data-text="${esc(text)}">
-            <span class="pill" title="${esc(x.type)}">${short[x.type] || "•"}</span>
-            <div><div class="pt">${x.link ? `<a href="${esc(x.link)}" target="_blank" rel="noopener">${esc(x.title)} ↗</a>` : esc(x.title)}</div>
-              <div class="pm">${meta}</div></div>
-            <div class="ptags">${(x.topics || []).map((t) => `<span>${esc(t)}</span>`).join("")}</div>
-          </div>`;
-        }).join("")}</section>`).join("")}
-      </div>`;
+      <div class="chips topics" role="group" aria-label="Topic">
+        <button type="button" class="chip" data-topic="" aria-pressed="true">All topics</button>
+        ${topics.map((t) => `<button type="button" class="chip" data-topic="${esc(t)}" aria-pressed="false">${esc(t)}</button>`).join("")}
+      </div>
+      <p class="note" id="pub-count" aria-live="polite"></p>`;
+  }
+
+  // one neon card per publication; the highlighted papers carry their plain-language summary
+  function pubCards(d, P){
+    const card = (x, hl) => {
+      const topics = hl ? (AREA_TOPICS[x.area] || [x.area]) : (x.topics || []);
+      const kind = hl ? "hl" : TYPE[x.type] || "conf";
+      const people = x.authors || (x.with ? `with ${x.with}` : "");
+      const text = [x.title, x.venue, x.with, x.authors, x.year, topics.join(" ")].join(" ").toLowerCase();
+      return `<article class="ncard t-${kind}" ${hl ? `id="paper-${slug(x.title)}"` : ""} data-type="${hl ? "hl" : esc(x.type)}" data-topics="${esc(topics.join("|"))}" data-text="${esc(text)}">
+        <div class="nc-top"><span class="nc-kind">${hl ? "★ Highlight" : esc(x.type)}</span><span class="nc-year">${esc(x.year)}</span></div>
+        ${x.award ? `<span class="pill gold nc-award">${esc(x.award)}</span>` : ""}
+        <h3>${x.link ? `<a href="${esc(x.link)}" target="_blank" rel="noopener">${esc(x.title)}</a>` : esc(x.title)}</h3>
+        <div class="nc-venue">${esc(x.venue)}${x.indexed ? ` · ${esc(x.indexed)}` : ""}</div>
+        ${hl && x.summary ? `<p class="nc-sum">${esc(x.summary)}</p>` : ""}
+        ${people ? `<div class="nc-by">${esc(people)}</div>` : ""}
+        <div class="nc-foot"><span class="nc-tags">${topics.map((t) => `<span>${esc(t)}</span>`).join("")}</span>${x.link ? `<span class="nc-open">OPEN ↗</span>` : ""}</div>
+      </article>`;
+    };
+    return d.featured.map((f) => card(f, true)).join("") + P.items.map((x) => card(x, false)).join("");
   }
 
   // ongoing projects, each with who is wanted; hidden until data/research.json lists some
@@ -120,7 +126,7 @@
     const list = d.activeProjects || [];
     if (!list.length) return "";
     return `
-      <h2 id="active">Active research <span>${list.length} ongoing · open to new members</span></h2>
+      <p class="note">${list.length} ongoing projects, open to new members.</p>
       <div class="grid">${list.map((p) => `
         <article class="card" id="proj-${slug(p.title)}" data-area="${esc(p.domain)}">
           <div class="meta"><span>${esc(p.domain)}</span>${p.status ? `<span class="pill ok">${esc(p.status)}</span>` : ""}</div>
@@ -128,7 +134,7 @@
           <p>${esc(p.summary)}</p>
           ${p.seeking ? `<div class="proof">Looking for: ${esc(p.seeking)}</div>` : ""}
           <div class="go-row">${p.link ? `<a class="go" href="${esc(p.link)}" target="_blank" rel="noopener">VIEW PROJECT ↗</a>` : ""}
-            <a class="go" href="#join" data-project="${esc(p.title)}">I'M INTERESTED ›</a></div>
+            <a class="go" href="#tab=join" data-project="${esc(p.title)}">I'M INTERESTED ›</a></div>
         </article>`).join("")}
       </div>`;
   }
@@ -209,40 +215,87 @@
       const sel = form && form.elements.project;
       if (sel) sel.value = a.dataset.project;
     }));
-    const pubs = main.querySelector("#pubs");
-    if (pubs) {
-      const typeChips = main.querySelectorAll(".chip[data-type]"), topic = main.querySelector("#pub-topic"), q = main.querySelector("#pub-q");
-      const count = main.querySelector("#pub-count"), total = pubs.querySelectorAll(".pub").length;
-      const apply = () => {
-        const type = main.querySelector('.chip[data-type][aria-pressed="true"]').dataset.type, tp = topic.value;
-        const words = q.value.toLowerCase().split(/\s+/).filter(Boolean);
-        let shown = 0;
-        pubs.querySelectorAll(".pub").forEach((row) => {
-          const ok = (!type || row.dataset.type === type) && (!tp || row.dataset.topics.split("|").includes(tp))
-            && words.every((w) => row.dataset.text.includes(w));
-          row.hidden = !ok; if (ok) shown++;
-        });
-        pubs.querySelectorAll(".pub-year").forEach((y) => { y.hidden = !y.querySelector(".pub:not([hidden])"); });
-        count.textContent = shown === total ? `Showing all ${total}.` : shown ? `Showing ${shown} of ${total}.` : "No publications match. Try another word or topic.";
-      };
-      typeChips.forEach((c) => c.addEventListener("click", () => { typeChips.forEach((x) => x.setAttribute("aria-pressed", String(x === c))); apply(); }));
-      topic.addEventListener("change", apply);
-      q.addEventListener("input", apply);
-      apply();
-    }
-    const nav = main.querySelector(".secnav");
-    if (nav && "IntersectionObserver" in window) {           // highlight the section in view
-      const links = [...nav.querySelectorAll("a")];
-      const spy = new IntersectionObserver((entries) => entries.forEach((e) => {
-        if (e.isIntersecting) links.forEach((l) => l.classList.toggle("on", l.getAttribute("href") === "#" + e.target.id));
-      }), { rootMargin: "-20% 0px -70% 0px" });
-      links.forEach((l) => { const t = main.querySelector(l.getAttribute("href")); if (t) spy.observe(t); });
-    }
-    const chips = main.querySelectorAll(".chip[data-area]");
-    chips.forEach((c) => c.addEventListener("click", () => {
-      chips.forEach((x) => x.setAttribute("aria-pressed", String(x === c)));
-      main.querySelectorAll("#papers .card").forEach((card) => { card.hidden = !!c.dataset.area && card.dataset.area !== c.dataset.area; });
-    }));
+    if (page === "research") wireResearch(d);
+  }
+
+  // tabs, the publication filters and "show more"; window.ResearchUI lets the 3D map drive them
+  function wireResearch(d){
+    const tabs = [...main.querySelectorAll("[role=tab]")], bar = main.querySelector("#tabs");
+    const show = (key, scroll) => {
+      if (!main.querySelector(`[data-panel="${key}"]`)) key = tabs[0].dataset.tab;
+      tabs.forEach((t) => { const on = t.dataset.tab === key; t.setAttribute("aria-selected", String(on)); t.tabIndex = on ? 0 : -1; });
+      main.querySelectorAll("[data-panel]").forEach((p) => { p.hidden = p.dataset.panel !== key; });
+      history.replaceState(null, "", "#tab=" + key);
+      if (scroll && bar.getBoundingClientRect().top < 0 || scroll === "always") bar.scrollIntoView({ behavior: "smooth", block: "start" });
+    };
+    tabs.forEach((t, i) => {
+      t.addEventListener("click", () => show(t.dataset.tab, true));
+      t.addEventListener("keydown", (e) => {                 // arrow keys move between tabs
+        const j = e.key === "ArrowRight" ? i + 1 : e.key === "ArrowLeft" ? i - 1 : null;
+        if (j === null) return;
+        const next = tabs[(j + tabs.length) % tabs.length]; next.focus(); show(next.dataset.tab);
+      });
+    });
+    main.querySelectorAll("[data-go]").forEach((a) => a.addEventListener("click", (e) => { e.preventDefault(); show(a.dataset.go, "always"); }));
+    main.querySelectorAll("[data-project]").forEach((a) => a.addEventListener("click", (e) => { e.preventDefault(); show("join", "always"); }));
+
+    // publications: type, topic and words narrow the cards; 12 at a time
+    const grid = main.querySelector("#pubgrid"), cards = grid ? [...grid.querySelectorAll(".ncard")] : [];
+    const more = main.querySelector("#pub-more"), count = main.querySelector("#pub-count"), q = main.querySelector("#pub-q");
+    const PAGE = 12;
+    let limit = PAGE;
+    const pick = (sel) => main.querySelector(sel + '[aria-pressed="true"]');
+    const apply = (keep) => {
+      if (!grid) return;
+      if (!keep) limit = PAGE;
+      const type = pick(".segb").dataset.type, topic = pick(".chip[data-topic]").dataset.topic;
+      const words = q.value.toLowerCase().split(/\s+/).filter(Boolean);
+      const hits = cards.filter((c) => (type === "" ? c.dataset.type !== "hl" : c.dataset.type === type)
+        && (!topic || c.dataset.topics.split("|").includes(topic)) && words.every((w) => c.dataset.text.includes(w)));
+      cards.forEach((c) => { c.hidden = true; c.classList.remove("in"); });
+      hits.slice(0, limit).forEach((c, i) => { c.hidden = false; c.style.setProperty("--i", Math.min(i, 11)); void c.offsetWidth; c.classList.add("in"); });
+      const left = hits.length - Math.min(limit, hits.length);
+      more.hidden = left <= 0;
+      more.textContent = `SHOW ${Math.min(PAGE, left)} MORE · ${left} LEFT`;
+      main.querySelector("#nomatch").hidden = hits.length > 0;
+      count.textContent = hits.length ? `Showing ${Math.min(limit, hits.length)} of ${hits.length}${type === "hl" ? " highlighted papers" : ""}.` : "";
+    };
+    const segs = main.querySelectorAll(".segb"), tchips = main.querySelectorAll(".chip[data-topic]");
+    const press = (list, b) => list.forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+    segs.forEach((b) => b.addEventListener("click", () => { press(segs, b); apply(); }));
+    tchips.forEach((b) => b.addEventListener("click", () => { press(tchips, b); apply(); }));
+    if (q) q.addEventListener("input", () => apply());
+    if (more) more.addEventListener("click", () => { limit += PAGE; apply(true); });
+    apply();
+
+    const flash = (el) => { el.classList.remove("flash"); void el.offsetWidth; el.classList.add("flash"); };
+    window.ResearchUI = {
+      show: (key) => show(key, "always"),
+      topics: [...tchips].map((b) => b.dataset.topic).filter(Boolean),
+      // the map's area: filter the publications by it when it is a topic, else point at its projects
+      area(name) {
+        const chip = [...tchips].find((b) => b.dataset.topic === name || (AREA_TOPICS[name] || []).includes(b.dataset.topic));
+        const projects = main.querySelectorAll(`#panel-active .card[data-area="${CSS.escape(name)}"]`);
+        if (chip) { press(segs, [...segs].find((b) => b.dataset.type === "")); press(tchips, chip); q.value = ""; apply(); show("pubs", "always"); }
+        else if (projects.length) { show("active", "always"); projects.forEach(flash); }
+        else show("active", "always");
+      },
+      item(id) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        if (el.classList.contains("ncard")) {
+          press(segs, [...segs].find((b) => b.dataset.type === "hl")); press(tchips, tchips[0]); q.value = ""; apply(); show("pubs");
+        } else show("active");
+        el.scrollIntoView({ behavior: "smooth", block: "center" });
+        flash(el);
+      },
+    };
+
+    // the address picks the tab: #tab=pubs, or the old section links (#join, #active, #all-pubs ...)
+    const h = decodeURIComponent(location.hash.slice(1));
+    const legacy = { join: "join", active: "active", "papers-sec": "pubs", "all-pubs": "pubs", patents: "patents", areas: "active" };
+    const key = h.startsWith("tab=") ? h.slice(4) : legacy[h];
+    show(key || "active", !!key && "always");
   }
 
   function wireForm(form, d){

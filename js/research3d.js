@@ -18,7 +18,7 @@
     const probe = document.createElement("canvas");
     if (!(probe.getContext("webgl") || probe.getContext("experimental-webgl"))) return;
     const T = window.THREE;
-    const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const still = matchMedia("(prefers-reduced-motion: reduce)").matches;   // no spin; the map is still clickable
     const slug = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
     const COL = { area: 0x46e2ff, project: 0x5dffa8, paper: 0xbfeeff, core: 0xffb35c };
 
@@ -172,23 +172,13 @@
       if (h) h.info.halo.scale.setScalar(h.info.base * 1.8);
     }
 
-    // a click: an area filters the papers (or highlights its projects); an item jumps to its card
+    // a click: an area filters the publications (or points at its projects); an item opens its tab and card
     function open(i){
-      let target;
-      if (i.type === "area") {
-        const chip = document.querySelector(`.chip[data-area="${CSS.escape(i.title)}"]`);
-        if (chip) { chip.click(); target = document.getElementById("papers-sec"); }
-        document.querySelectorAll(`.card[data-area="${CSS.escape(i.title)}"]`).forEach(flash);
-        target = target || document.querySelector(`.card[data-area="${CSS.escape(i.title)}"]`) || document.getElementById("areas");
-      } else {
-        const chip = i.type === "paper" && document.querySelector('.chip[data-area=""]');
-        if (chip) chip.click();
-        target = document.getElementById(i.id);
-        if (target) flash(target);
-      }
-      if (target) target.scrollIntoView({ behavior: still ? "auto" : "smooth", block: "start" });
+      const ui = window.ResearchUI;
+      if (!ui) return;
+      if (i.type === "area") ui.area(i.title);
+      else ui.item(i.id);
     }
-    function flash(card){ card.classList.remove("flash"); void card.offsetWidth; card.classList.add("flash"); }
 
     // ---------- size, visibility, loop ----------
     function resize(){
