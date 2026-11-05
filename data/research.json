@@ -1,0 +1,87 @@
+{
+  "_help": "Content of research.html. Edit freely: the page reads this file on load. metrics: the numbers strip. featured: the paper cards, newest first (area must match one of areas; award and link are optional). patents: status is Granted, Published or Filed. profiles: links shown at the bottom; a profile with an empty url is hidden.",
+  "intro": "Twelve years of research across visible-light communication, the Internet of Things, AI and healthcare informatics: from a Ph.D. on Li-Fi modulation at NIT Karnataka to post-doctoral work on healthcare IoT at the University of Central Florida.",
+  "metrics": [
+    { "value": "47+", "label": "Publications" },
+    { "value": "6", "label": "Patents" },
+    { "value": "11", "label": "Google Scholar h-index" },
+    { "value": "13", "label": "i10-index" },
+    { "value": "8", "label": "Scopus h-index" },
+    { "value": "3", "label": "Best Paper awards" }
+  ],
+  "areas": ["Li-Fi / VLC", "Healthcare IoT", "IoT Systems", "AI / ML", "Digital Twins", "AR / VR", "Autonomous EVs", "Vehicle Platooning", "P2P Energy Trading", "Quantum Computing", "Blockchain"],
+  "featured": [
+    {
+      "title": "IoTaaS: An IoT-as-a-Service Framework for Virtual Experimentation",
+      "authors": "Salvi et al.",
+      "venue": "AIR 2025, Nazarbayev University (Springer)",
+      "year": 2025,
+      "area": "IoT Systems",
+      "award": "Best Paper",
+      "summary": "A framework that offers IoT experiments as a service, so students and researchers can run IoT experiments virtually instead of needing the hardware in front of them.",
+      "link": ""
+    },
+    {
+      "title": "Stage-Wise IoT Solutions for Alzheimer's Disease",
+      "authors": "Salvi, Garg, Gurupur",
+      "venue": "Sensors (MDPI)",
+      "year": 2025,
+      "area": "Healthcare IoT",
+      "summary": "Organises IoT-based solutions by the stage of Alzheimer's disease they serve, from early detection to monitoring and care, as a guide for researchers and care providers.",
+      "link": "https://www.mdpi.com/1424-8220/25/17/5252"
+    },
+    {
+      "title": "Digital Convergence in Dental Informatics: AI, IoT, Digital Twins & LLMs",
+      "authors": "Salvi et al.",
+      "venue": "Electronics (MDPI)",
+      "year": 2025,
+      "area": "Healthcare IoT",
+      "summary": "A study of how artificial intelligence, IoT, digital twins and large language models are coming together in dental care and dental informatics.",
+      "link": "https://www.mdpi.com/2079-9292/14/16/3278"
+    },
+    {
+      "title": "Continuous Sign-Language Recognition with Leap Motion",
+      "authors": "Salvi et al.",
+      "venue": "IEEE AIC 2024",
+      "year": 2024,
+      "area": "AI / ML",
+      "award": "Best Paper",
+      "summary": "Recognises continuous sign language, not just isolated signs, from hand-tracking data captured by a Leap Motion sensor.",
+      "link": "https://doi.org/10.1109/AIC61668.2024.10730854"
+    },
+    {
+      "title": "A Nested-Texture Image-Pattern Optical Camera Communication",
+      "authors": "Salvi & Geetha",
+      "venue": "IEEE Access",
+      "year": 2022,
+      "area": "Li-Fi / VLC",
+      "summary": "Optical camera communication sends data with light that an ordinary camera can read. This work carries the data in nested textures within an image pattern, which a camera then decodes.",
+      "link": "https://ieeexplore.ieee.org/document/9915602"
+    },
+    {
+      "title": "Hybrid FSK + PWM Modulation for Li-Fi",
+      "authors": "Salvi & Vasantha",
+      "venue": "Computation (MDPI)",
+      "year": 2022,
+      "area": "Li-Fi / VLC",
+      "summary": "Combines frequency-shift keying with pulse-width modulation to send data over visible light (Li-Fi), part of the doctoral work on efficient modulation for indoor IoT.",
+      "link": "https://www.mdpi.com/2079-3197/10/7/110"
+    }
+  ],
+  "patents": [
+    { "status": "Granted", "title": "Li-Fi for Secured Wi-Fi Access during On-Campus Online Exams", "where": "South Africa (CIPC) 2023/02929", "year": 2023 },
+    { "status": "Granted", "title": "Li-Fi for Secured Wi-Fi Access during On-Campus Online Exams", "where": "India 202424013857", "year": 2024 },
+    { "status": "Published", "title": "Teleoperated Robotic System", "where": "India 202421097626", "year": 2025 },
+    { "status": "Published", "title": "AI-Powered Content Creation in Automated Marketing", "where": "India 202441025040", "year": 2024 },
+    { "status": "Published", "title": "Integrated Smart Water Management System", "where": "India 202441068913", "year": 2024 },
+    { "status": "Filed", "title": "Wireless Sensor-Based Railway Track Crack Detection (design)", "where": "India 464849-001", "year": 2025 }
+  ],
+  "collaborate": "Open to research collaborations, joint grant proposals and Ph.D. co-supervision in Li-Fi, healthcare IoT, digital twins and applied AI.",
+  "profiles": [
+    { "label": "Google Scholar", "url": "" },
+    { "label": "ORCID", "url": "" },
+    { "label": "Scopus", "url": "" },
+    { "label": "GitHub", "url": "https://github.com/SanketSalviNITK" },
+    { "label": "LinkedIn", "url": "https://www.linkedin.com/in/onlysanket" }
+  ]
+}

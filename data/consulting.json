@@ -1,0 +1,67 @@
+{
+  "_help": "Content of consulting.html. Edit freely: the page reads this file on load. services: what you offer, each with proof. cases: past work you are happy to show. bookingUrl: a Calendly / Cal.com link; when empty, the page offers email only.",
+  "intro": "Over a decade of building software and hardware systems, as a freelance consultant and as a researcher. I help colleges, start-ups and companies turn an idea in IoT, AI or education technology into a working system, and train the teams who will run it.",
+  "services": [
+    {
+      "title": "IoT & Li-Fi systems",
+      "desc": "Sensor networks, smart-device prototypes and visible-light (Li-Fi) communication, from proof of concept to a working pilot.",
+      "proof": "Ph.D. in Li-Fi for indoor IoT · Li-Fi patent granted in India and South Africa"
+    },
+    {
+      "title": "AI, ML & computer vision",
+      "desc": "Models and prototypes that turn images and sensor data into decisions: recognition, monitoring and prediction.",
+      "proof": "Best Paper, IEEE AIC 2024 (sign-language recognition) · Best Project, Aavishkar 2017 (crop-health drone)"
+    },
+    {
+      "title": "Full-stack platforms",
+      "desc": "Web and mobile platforms built end to end, with the MERN stack, cloud and serverless back ends, designed to be easy to maintain.",
+      "proof": "Built Student Hub: notes, animations and a sandboxed C autograder"
+    },
+    {
+      "title": "AR / VR & digital twins",
+      "desc": "Immersive learning and visualisation, and digital twins that mirror a physical system for monitoring and simulation.",
+      "proof": "Teaches AR/VR at MIT-WPU · research on digital twins in healthcare"
+    },
+    {
+      "title": "Healthcare IoT & informatics",
+      "desc": "Connected-care and health-data systems, grounded in the latest research.",
+      "proof": "Post-doctoral research at the University of Central Florida · four journal papers in 2025"
+    },
+    {
+      "title": "Training & workshops",
+      "desc": "Faculty development programmes, corporate training and hands-on workshops in IoT, full-stack development, AR/VR and applied AI.",
+      "proof": "12 years of teaching · Wipro Global Java Trainer certification"
+    }
+  ],
+  "cases": [
+    {
+      "title": "Student Hub",
+      "tag": "EdTech platform",
+      "desc": "A learning platform for Data Structures in C: syllabus-aligned notes, 47 interactive animations, quizzes, explainer videos and an autograder that runs student code in a sandbox, with a teacher dashboard.",
+      "link": "https://students.onlysanket.in"
+    },
+    {
+      "title": "Li-Fi secured Wi-Fi access for on-campus exams",
+      "tag": "Patent · granted",
+      "desc": "Uses Li-Fi to control Wi-Fi access during online exams on campus. Granted in South Africa (2023) and India (2024)."
+    },
+    {
+      "title": "Advhan: crowd-sourced road-health monitoring",
+      "tag": "Best Project · Unisys Cloud 20/20",
+      "desc": "Road conditions reported by the crowd and mapped in the cloud."
+    },
+    {
+      "title": "DIY Rainwater Harvesting Advisor",
+      "tag": "UNESCO-funded via KSCST",
+      "desc": "A funded project (₹1,50,000, 2016) to help households plan their own rainwater harvesting."
+    }
+  ],
+  "process": [
+    { "step": "Discovery call", "desc": "We talk through the problem, the users and what success looks like." },
+    { "step": "Scope & proposal", "desc": "A written plan with milestones, timeline and cost." },
+    { "step": "Build in milestones", "desc": "Working versions you can try along the way, not one big reveal at the end." },
+    { "step": "Handover & training", "desc": "Documentation, source code and training for the people who will run it." }
+  ],
+  "email": "sanketsalvi.salvi@gmail.com",
+  "bookingUrl": ""
+}
