@@ -1,15 +1,45 @@
 {
-  "_help": "Content of research.html. Edit freely: the page reads this file on load. metrics: the numbers strip. featured: the paper cards, newest first (area must match one of areas; award and link are optional). patents: status is Granted, Published or Filed. profiles: links shown at the bottom; a profile with an empty url is hidden.",
+  "_help": "Content of research.html. Edit freely: the page reads this file on load. metrics: the numbers strip. featured: the paper cards, newest first (area must match one of areas; award and link are optional). patents: status is Granted, Published or Filed. profiles: links shown at the bottom; a profile with an empty url is hidden. activeProjects: ongoing work shown under Active research (link: optional project page or repository; seeking: who you are looking for, e.g. Ph.D. students, co-investigators; the section is hidden while the list is empty). interestFormUrl: the Google Apps Script web-app URL from tools/Research_Interest_Form.gs; while empty, the Join form opens an email instead.",
   "intro": "Twelve years of research across visible-light communication, the Internet of Things, AI and healthcare informatics: from a Ph.D. on Li-Fi modulation at NIT Karnataka to post-doctoral work on healthcare IoT at the University of Central Florida.",
   "metrics": [
-    { "value": "47+", "label": "Publications" },
-    { "value": "6", "label": "Patents" },
-    { "value": "11", "label": "Google Scholar h-index" },
-    { "value": "13", "label": "i10-index" },
-    { "value": "8", "label": "Scopus h-index" },
-    { "value": "3", "label": "Best Paper awards" }
+    {
+      "value": "47+",
+      "label": "Publications"
+    },
+    {
+      "value": "6",
+      "label": "Patents"
+    },
+    {
+      "value": "11",
+      "label": "Google Scholar h-index"
+    },
+    {
+      "value": "13",
+      "label": "i10-index"
+    },
+    {
+      "value": "8",
+      "label": "Scopus h-index"
+    },
+    {
+      "value": "3",
+      "label": "Best Paper awards"
+    }
   ],
-  "areas": ["Li-Fi / VLC", "Healthcare IoT", "IoT Systems", "AI / ML", "Digital Twins", "AR / VR", "Autonomous EVs", "Vehicle Platooning", "P2P Energy Trading", "Quantum Computing", "Blockchain"],
+  "areas": [
+    "Li-Fi / VLC",
+    "Healthcare IoT",
+    "IoT Systems",
+    "AI / ML",
+    "Digital Twins",
+    "AR / VR",
+    "Autonomous EVs",
+    "Vehicle Platooning",
+    "P2P Energy Trading",
+    "Quantum Computing",
+    "Blockchain"
+  ],
   "featured": [
     {
       "title": "IoTaaS: An IoT-as-a-Service Framework for Virtual Experimentation",
@@ -68,20 +98,109 @@
       "link": "https://www.mdpi.com/2079-3197/10/7/110"
     }
   ],
+  "activeProjects": [
+    {
+      "title": "Embodied AI Platform (NAO robot)",
+      "domain": "Embodied AI / Robotics",
+      "status": "Ongoing",
+      "summary": "Turning a NAO V4 humanoid robot into a physical interface for locally hosted AI. The robot listens, speaks and gestures, while speech recognition, a local language model and motion planning run on a server. Next: a 3D digital twin of the robot, document Q&A, emotion recognition and campus deployment.",
+      "link": "https://github.com/SanketSalviNITK/Embodied_AI_NaoRobot"
+    },
+    {
+      "title": "FIT-ARCADE",
+      "domain": "Computer Vision / Health",
+      "status": "Ongoing",
+      "summary": "A fitness arcade in the browser, played with your body. A webcam turns jumps, squats, punches and push-ups into game controls, estimates heart rate from the same camera (rPPG) and adapts each game's difficulty to the player's effort. All video stays on the device.",
+      "link": "https://github.com/SanketSalviNITK/Fit_Arcade"
+    },
+    {
+      "title": "Mobile IPS: indoor positioning",
+      "domain": "Indoor Positioning",
+      "status": "Ongoing",
+      "summary": "Indoor positioning for Android phones. A building is mapped once with ARCore (walls, walkable floor and Wi-Fi fingerprints); after that, step detection and Wi-Fi matching are fused in a particle filter that cannot walk through walls. Accuracy studies in real buildings are next."
+    },
+    {
+      "title": "Sign Language Translator",
+      "domain": "AI / ML",
+      "status": "Ongoing",
+      "summary": "Translating continuous sign language into text, building on Best Paper–winning work on continuous sign-language recognition with a Leap Motion hand-tracking sensor (IEEE AIC 2024).",
+      "link": "https://doi.org/10.1109/AIC61668.2024.10730854"
+    },
+    {
+      "title": "ARTHunt: AR Treasure Hunt",
+      "domain": "AR / VR",
+      "status": "Ongoing",
+      "summary": "A research platform for augmented-reality treasure hunts that run in the browser with no app download, plus a HoloLens 2 version on the same backend. It studies whether web AR raises participation, how a camera power-saver affects battery and heat, and how riddle-based clues support spatial problem-solving.",
+      "link": "https://github.com/SanketSalviNITK/Augmented-Reality-Treasure-Hunt"
+    },
+    {
+      "title": "The Last Beacon: IoT training platform",
+      "domain": "IoT Education",
+      "status": "Ongoing",
+      "summary": "A gamified, story-driven IoT workshop: seven missions on ESP8266/ESP32 boards, a custom Arduino library (BeaconAria) and a real-time 3D facilitator dashboard, with an offline USB fallback for classrooms with poor Wi-Fi. With collaborators at NIT Karnataka, the University of Central Florida and the University of Malta.",
+      "link": "https://github.com/SanketSalviNITK/LastBeacon_IoT_Platform"
+    }
+  ],
+  "interestFormUrl": "https://script.google.com/macros/s/AKfycbxy8giLhzO5TR6vOgdsrrkvx5DkoP97Opmrrd8OKMHb6rl85wMBCOEx8ZfHLk21DLxujQ/exec",
   "patents": [
-    { "status": "Granted", "title": "Li-Fi for Secured Wi-Fi Access during On-Campus Online Exams", "where": "South Africa (CIPC) 2023/02929", "year": 2023 },
-    { "status": "Granted", "title": "Li-Fi for Secured Wi-Fi Access during On-Campus Online Exams", "where": "India 202424013857", "year": 2024 },
-    { "status": "Published", "title": "Teleoperated Robotic System", "where": "India 202421097626", "year": 2025 },
-    { "status": "Published", "title": "AI-Powered Content Creation in Automated Marketing", "where": "India 202441025040", "year": 2024 },
-    { "status": "Published", "title": "Integrated Smart Water Management System", "where": "India 202441068913", "year": 2024 },
-    { "status": "Filed", "title": "Wireless Sensor-Based Railway Track Crack Detection (design)", "where": "India 464849-001", "year": 2025 }
+    {
+      "status": "Granted",
+      "title": "Li-Fi for Secured Wi-Fi Access during On-Campus Online Exams",
+      "where": "South Africa (CIPC) 2023/02929",
+      "year": 2023
+    },
+    {
+      "status": "Granted",
+      "title": "Li-Fi for Secured Wi-Fi Access during On-Campus Online Exams",
+      "where": "India 202424013857",
+      "year": 2024
+    },
+    {
+      "status": "Published",
+      "title": "Teleoperated Robotic System",
+      "where": "India 202421097626",
+      "year": 2025
+    },
+    {
+      "status": "Published",
+      "title": "AI-Powered Content Creation in Automated Marketing",
+      "where": "India 202441025040",
+      "year": 2024
+    },
+    {
+      "status": "Published",
+      "title": "Integrated Smart Water Management System",
+      "where": "India 202441068913",
+      "year": 2024
+    },
+    {
+      "status": "Filed",
+      "title": "Wireless Sensor-Based Railway Track Crack Detection (design)",
+      "where": "India 464849-001",
+      "year": 2025
+    }
   ],
   "collaborate": "Open to research collaborations, joint grant proposals and Ph.D. co-supervision in Li-Fi, healthcare IoT, digital twins and applied AI.",
   "profiles": [
-    { "label": "Google Scholar", "url": "" },
-    { "label": "ORCID", "url": "" },
-    { "label": "Scopus", "url": "" },
-    { "label": "GitHub", "url": "https://github.com/SanketSalviNITK" },
-    { "label": "LinkedIn", "url": "https://www.linkedin.com/in/onlysanket" }
+    {
+      "label": "Google Scholar",
+      "url": ""
+    },
+    {
+      "label": "ORCID",
+      "url": ""
+    },
+    {
+      "label": "Scopus",
+      "url": ""
+    },
+    {
+      "label": "GitHub",
+      "url": "https://github.com/SanketSalviNITK"
+    },
+    {
+      "label": "LinkedIn",
+      "url": "https://www.linkedin.com/in/onlysanket"
+    }
   ]
 }

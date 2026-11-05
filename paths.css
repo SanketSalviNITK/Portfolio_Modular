@@ -83,3 +83,22 @@ footer{max-width:1120px;margin:0 auto;padding:0 20px 40px;color:var(--dim);font-
   .grid{grid-template-columns:1fr;}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none !important;}}
+
+/* the Join my research form */
+.join{display:grid;grid-template-columns:minmax(220px,1fr) 2fr;align-items:start;}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px 14px;margin-bottom:16px;}
+.fields label{display:flex;flex-direction:column;gap:6px;font-size:11px;letter-spacing:.14em;color:var(--dim);text-transform:uppercase;}
+.fields .wide{grid-column:1/-1;}
+.join > *,.fields label{min-width:0;}
+.fields input,.fields select,.fields textarea{width:100%;font:14px/1.4 "Courier New",monospace;color:var(--paper);background:var(--ink);
+  border:1px solid rgba(255,255,255,.2);padding:10px 11px;text-transform:none;letter-spacing:0;}
+.fields input:focus,.fields select:focus,.fields textarea:focus{border-color:var(--c);outline:none;}
+.fields .check{flex-direction:row;align-items:flex-start;gap:10px;text-transform:none;letter-spacing:0;font-size:13px;line-height:1.5;color:#c3ccd5;}
+.fields .check input{width:auto;flex:none;margin-top:3px;accent-color:var(--c);}
+.fields .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;}
+.form-msg{align-self:center;font-size:13px;line-height:1.5;}
+.form-msg.ok{color:var(--green);} .form-msg.bad{color:#ff8a8a;}
+.join button.btn{cursor:pointer;font-family:"Courier New",monospace;}
+.join button:disabled{opacity:.6;cursor:wait;}
+@media (max-width:760px){.join{grid-template-columns:1fr;padding:22px 18px;}.fields{grid-template-columns:1fr;}}
+.card .go-row{margin-top:auto;display:flex;gap:18px;flex-wrap:wrap;} .card .go-row .go{margin-top:0;}
