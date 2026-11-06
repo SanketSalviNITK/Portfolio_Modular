@@ -22,7 +22,14 @@
     ],
     "doi": "",
     "link": "https://onlysanket.in/research.html#tab=pubs",
-    "domain": "IoT Education"
+    "domain": "IoT Education",
+    "tags": [
+      "IoT",
+      "virtual lab",
+      "engineering education",
+      "Raspberry Pi",
+      "Arduino"
+    ]
   },
   "scenes": [
     {

@@ -4,6 +4,8 @@
     python tools/paper_videos/make_paper_video.py iotaas            # -> tools/paper_videos/out/iotaas/
     python tools/paper_videos/make_paper_video.py iotaas --stills   # one PNG per scene (start, middle, end), for checking
     python tools/paper_videos/make_paper_video.py iotaas --remix    # only rebuild the soundtrack on the rendered frames
+    python tools/paper_videos/make_paper_video.py iotaas --text     # only rebuild youtube.md
+    python tools/paper_videos/make_paper_video.py iotaas --thumb    # only rebuild thumbnail.jpg
 
 An episode is papers/<id>.json (meta + what Neerja says in each scene) and papers/<id>.js (that paper's visuals).
 The intro, title card, outro, captions and thumbnail design are shared (engine.js), so every episode looks alike.
@@ -92,7 +94,7 @@ def timeline(ep):
         if len(caps) != len(ss):
             raise SystemExit(f"scene {s['view']}: the caption has {len(caps)} sentences, the narration {len(ss)}")
         at = t + (INTRO_VO if s["view"] == "intro" else VO_IN)
-        sc = {"view": s["view"], "captions": [], "start": round(t, 3)}
+        sc = {"view": s["view"], "chapter": s.get("chapter"), "captions": [], "start": round(t, 3)}
         for text, c in zip(ss, caps):
             a = next(clips)
             voice[int(at * RATE):int(at * RATE) + len(a)] += a
@@ -125,11 +127,17 @@ def open_page(pw, tl, size=(1920, 1080)):
     return page
 
 
+def yt_title(M, ep):
+    """YouTube allows 100 characters: the short title, the paper's name (before a colon) when it fits, the episode."""
+    full = f"{M['short']} | {M['title'].split(':')[0]} | Research Bytes #{ep:02}"
+    return full if len(full) <= 100 else f"{M['short']} | Research Bytes #{ep:02}"
+
+
 def youtube_text(tl, out_dir, slug):
     M = tl["meta"]
     chapters = []                                                 # [start, end, name], one per named part
     for sc in tl["scenes"]:
-        name = CHAPTERS.get(sc["view"], sc["view"].title())
+        name = sc.get("chapter") or CHAPTERS.get(sc["view"], sc["view"].title())
         if chapters and chapters[-1][2] == name:
             chapters[-1][1] = sc["end"]
         else:
@@ -145,10 +153,10 @@ def youtube_text(tl, out_dir, slug):
         i += 1
     chapters = [(0 if k == 0 else c[0], c[2]) for k, c in enumerate(chapters)]
     stamp = lambda s: f"{int(s) // 60}:{int(s) % 60:02}"
-    narration = " ".join(c["text"] for sc in tl["scenes"][2:-2] for c in sc["captions"])
+    narration = " ".join(c["text"] for sc in tl["scenes"] if sc["view"] not in ("intro", "title", "credits", "outro") for c in sc["captions"])
     lines = [
         f"# YouTube: Research Bytes #{tl['episode']:02}", "",
-        "## Title", f"{M['short']} | {M['title'].split(':')[0]} | Research Bytes #{tl['episode']:02}", "",
+        "## Title", yt_title(M, tl["episode"]), "",
         "## Description",
         f"{M['title']}", f"{M['venue']} · {M['publisher']}" + (f" · https://doi.org/{M['doi']}" if M.get("doi") else ""),
         "Authors: " + ", ".join(M["authors"]), "",
@@ -156,7 +164,7 @@ def youtube_text(tl, out_dir, slug):
         "Chapters:", *[f"{stamp(s)} {n}" for s, n in chapters], "",
         f"More research: {M['link']}",
         "Research Bytes: one paper, two minutes, with Dr. Sanket Salvi. Narrated by Neerja (synthetic voice).", "",
-        "## Tags", ", ".join(["Research Bytes", "Sanket Salvi", M["domain"], "IoT", "research explained", "paper summary", "engineering education"]), "",
+        "## Tags", ", ".join(["Research Bytes", "Sanket Salvi", M["domain"], *M.get("tags", []), "research explained", "paper summary"]), "",
         f"## Files", f"- Video: {slug}.mp4", f"- Captions (upload as English subtitles): {slug}.srt", "- Thumbnail: thumbnail.jpg",
     ]
     (out_dir / "youtube.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
@@ -164,7 +172,7 @@ def youtube_text(tl, out_dir, slug):
 
 def main():
     pid = sys.argv[1]
-    stills, remix = "--stills" in sys.argv, "--remix" in sys.argv
+    stills, remix, text_only, thumb_only = ("--stills" in sys.argv, "--remix" in sys.argv, "--text" in sys.argv, "--thumb" in sys.argv)
     ep = json.loads((HERE / "papers" / f"{pid}.json").read_text(encoding="utf-8"))
     out_dir = HERE / "out" / pid
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -175,6 +183,17 @@ def main():
     for sc in tl["scenes"]:
         print(f"  {sc['view']:8} {sc['start']:6.2f} - {sc['end']:6.2f}")
 
+    if thumb_only:                                                # only rebuild thumbnail.jpg
+        with sync_playwright() as pw:
+            page = open_page(pw, tl, size=(1280, 720))
+            page.evaluate("renderThumb()")
+            page.screenshot(path=str(out_dir / "thumbnail.jpg"), type="jpeg", quality=90)
+        print("wrote", (out_dir / "thumbnail.jpg").relative_to(HERE.parents[1]))
+        return
+    if text_only:                                                 # only rebuild youtube.md
+        youtube_text(tl, out_dir, slug)
+        print("wrote", (out_dir / "youtube.md").relative_to(HERE.parents[1]))
+        return
     if stills:
         d = out_dir / "stills"
         d.mkdir(exist_ok=True)

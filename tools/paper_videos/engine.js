@@ -57,6 +57,13 @@
         `<span class="chip" style="color:${b.startsWith("★") ? "#ffb35c" : "#46e2ff"};${pop(lt, 1.0 + i * 0.25, 0.35)}">${esc(b)}</span>`).join("")}</div>
       <div class="abs mono" style="left:150px;top:720px;font-size:22px;letter-spacing:.06em;color:#9aa7b4;${rise(lt, 1.6)}">${esc(M.authors.join(" · "))}</div>`;
 
+  // credits: the paper, its authors (Dr. Salvi highlighted), venue, publisher, DOI and badges
+  V.credits = (s, lt) => `<div class="abs kick glow" style="left:150px;top:180px;${rise(lt, 0)}">The paper</div>
+      <div class="abs h1" style="left:150px;top:230px;width:1300px;font-size:56px;${rise(lt, 0.2)}">${esc(M.title)}</div>
+      <div class="abs" style="left:150px;top:${M.title.length > 70 ? 450 : 400}px;width:1300px">${M.authors.map((a, i) => `<span style="display:inline-block;margin:0 26px 18px 0;font-size:36px;font-weight:${a === "Sanket Salvi" ? 700 : 400};color:${a === "Sanket Salvi" ? "#46e2ff" : "#fff"};${pop(lt, 0.5 + i * 0.35, 0.35)}">${esc(a)}</span>`).join("")}</div>
+      <div class="abs mono" style="left:150px;top:${M.title.length > 70 ? 610 : 560}px;font-size:24px;color:#9aa7b4;letter-spacing:.06em;${rise(lt, 2.2)}">${esc(M.venue)}<br>${esc(M.publisher)}${M.doi ? ` · doi:${esc(M.doi)}` : ""}</div>
+      <div class="abs" style="left:150px;top:${M.title.length > 70 ? 710 : 660}px;display:flex;gap:14px">${M.badges.map((b, i) => `<span class="chip" style="color:${b.startsWith("★") ? "#ffb35c" : "#46e2ff"};${pop(lt, 2.8 + i * 0.25, 0.4)}">${esc(b)}</span>`).join("")}</div>`;
+
   V.outro = (s, lt) => `
       <div class="abs center" style="top:250px;font-size:120px;font-weight:200;letter-spacing:.16em;text-indent:.16em;text-shadow:0 0 30px rgba(70,226,255,.6);${rise(lt, 0)}">RESEARCH</div>
       <div class="abs center kick glow" style="top:400px;font-size:52px;letter-spacing:.7em;text-indent:.7em;${rise(lt, 0.2)}">BYTES</div>
@@ -67,10 +74,11 @@
   // the YouTube thumbnail (rendered once, not part of the video): the short title, the episode and its badges, Neerja large
   V.thumb = () => `
       <div class="abs kick" style="left:110px;top:120px;font-size:30px;color:#46e2ff">RESEARCH BYTES · #${String(T.episode).padStart(2, "0")}</div>
-      <div class="abs" style="left:110px;top:200px;width:1150px;font-size:118px;font-weight:800;line-height:1.02;text-shadow:0 0 34px rgba(70,226,255,.55)">${esc(M.short)}</div>
-      <div class="abs" style="left:110px;top:${M.short.length > 22 ? 560 : 460}px;display:flex;gap:18px">${M.badges.map((b) =>
-        `<span class="chip" style="font-size:30px;padding:10px 18px;color:${b.startsWith("★") ? "#ffb35c" : "#5dffa8"}">${esc(b)}</span>`).join("")}</div>
-      <div class="abs mono" style="left:110px;bottom:110px;font-size:28px;letter-spacing:.2em;color:#9aa7b4">${esc(M.title.split(":")[0])} · ${M.year}</div>`;
+      <div class="abs" style="left:110px;top:190px;width:1150px;display:flex;flex-direction:column;gap:36px">
+        <div style="font-size:${M.short.length > 34 ? 104 : 118}px;font-weight:800;line-height:1.02;text-shadow:0 0 34px rgba(70,226,255,.55)">${esc(M.short)}</div>
+        <div style="display:flex;gap:18px">${M.badges.map((b) =>
+          `<span class="chip" style="font-size:30px;padding:10px 18px;color:${b.startsWith("★") ? "#ffb35c" : "#5dffa8"}">${esc(b)}</span>`).join("")}</div></div>
+      <div class="abs mono" style="left:110px;bottom:110px;width:1150px;font-size:26px;letter-spacing:.14em;color:#9aa7b4">${esc(M.title.split(":")[0])} · ${M.year}</div>`;
 
   // ---------------- background: a slow neon grid and drifting particles ----------------
   function drawBg(t){
