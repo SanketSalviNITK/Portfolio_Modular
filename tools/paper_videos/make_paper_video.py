@@ -92,7 +92,7 @@ def timeline(ep):
         if len(caps) != len(ss):
             raise SystemExit(f"scene {s['view']}: the caption has {len(caps)} sentences, the narration {len(ss)}")
         at = t + (INTRO_VO if s["view"] == "intro" else VO_IN)
-        sc = {"view": s["view"], "captions": [], "start": round(t, 3)}
+        sc = {"view": s["view"], "chapter": s.get("chapter"), "captions": [], "start": round(t, 3)}
         for text, c in zip(ss, caps):
             a = next(clips)
             voice[int(at * RATE):int(at * RATE) + len(a)] += a
@@ -129,7 +129,7 @@ def youtube_text(tl, out_dir, slug):
     M = tl["meta"]
     chapters = []                                                 # [start, end, name], one per named part
     for sc in tl["scenes"]:
-        name = CHAPTERS.get(sc["view"], sc["view"].title())
+        name = sc.get("chapter") or CHAPTERS.get(sc["view"], sc["view"].title())
         if chapters and chapters[-1][2] == name:
             chapters[-1][1] = sc["end"]
         else:
@@ -145,7 +145,7 @@ def youtube_text(tl, out_dir, slug):
         i += 1
     chapters = [(0 if k == 0 else c[0], c[2]) for k, c in enumerate(chapters)]
     stamp = lambda s: f"{int(s) // 60}:{int(s) % 60:02}"
-    narration = " ".join(c["text"] for sc in tl["scenes"][2:-2] for c in sc["captions"])
+    narration = " ".join(c["text"] for sc in tl["scenes"] if sc["view"] not in ("intro", "title", "credits", "outro") for c in sc["captions"])
     lines = [
         f"# YouTube: Research Bytes #{tl['episode']:02}", "",
         "## Title", f"{M['short']} | {M['title'].split(':')[0]} | Research Bytes #{tl['episode']:02}", "",
@@ -156,7 +156,7 @@ def youtube_text(tl, out_dir, slug):
         "Chapters:", *[f"{stamp(s)} {n}" for s, n in chapters], "",
         f"More research: {M['link']}",
         "Research Bytes: one paper, two minutes, with Dr. Sanket Salvi. Narrated by Neerja (synthetic voice).", "",
-        "## Tags", ", ".join(["Research Bytes", "Sanket Salvi", M["domain"], "IoT", "research explained", "paper summary", "engineering education"]), "",
+        "## Tags", ", ".join(["Research Bytes", "Sanket Salvi", M["domain"], *M.get("tags", []), "research explained", "paper summary"]), "",
         f"## Files", f"- Video: {slug}.mp4", f"- Captions (upload as English subtitles): {slug}.srt", "- Thumbnail: thumbnail.jpg",
     ]
     (out_dir / "youtube.md").write_text("\n".join(lines) + "\n", encoding="utf-8")

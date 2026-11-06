@@ -167,13 +167,4 @@
       card(820, cs(s, 1), CY, "IoTaaS virtual lab", ["✓ Open 24 × 7, anywhere", "✓ One student, one kit", "✓ Low cost per student"]);
   };
 
-  // credits: the authors and the paper
-  V.credits = (s, lt) => {
-    const M = window.TIMELINE.meta;
-    return `<div class="abs kick glow" style="left:150px;top:180px;${rise(lt, 0)}">The paper</div>
-      <div class="abs h1" style="left:150px;top:230px;width:1300px;font-size:56px;${rise(lt, 0.2)}">${esc(M.title)}</div>
-      <div class="abs" style="left:150px;top:430px;width:1300px">${M.authors.map((a, i) => `<span style="display:inline-block;margin:0 26px 18px 0;font-size:36px;font-weight:${a === "Sanket Salvi" ? 700 : 400};color:${a === "Sanket Salvi" ? CY : "#fff"};${pop(lt, 0.5 + i * 0.35, 0.35)}">${esc(a)}</span>`).join("")}</div>
-      <div class="abs mono" style="left:150px;top:590px;font-size:24px;color:${DIM};letter-spacing:.06em;${rise(lt, 2.2)}">${esc(M.venue)}<br>${esc(M.publisher)}${M.doi ? ` · doi:${esc(M.doi)}` : ""}</div>
-      <div class="abs" style="left:150px;top:690px;${pop(lt, 2.8, 0.4)}"><span class="chip" style="color:${AM}">★ Best Paper · AIR 2025</span></div>`;
-  };
 })();

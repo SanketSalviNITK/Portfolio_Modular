@@ -57,6 +57,13 @@
         `<span class="chip" style="color:${b.startsWith("★") ? "#ffb35c" : "#46e2ff"};${pop(lt, 1.0 + i * 0.25, 0.35)}">${esc(b)}</span>`).join("")}</div>
       <div class="abs mono" style="left:150px;top:720px;font-size:22px;letter-spacing:.06em;color:#9aa7b4;${rise(lt, 1.6)}">${esc(M.authors.join(" · "))}</div>`;
 
+  // credits: the paper, its authors (Dr. Salvi highlighted), venue, publisher, DOI and badges
+  V.credits = (s, lt) => `<div class="abs kick glow" style="left:150px;top:180px;${rise(lt, 0)}">The paper</div>
+      <div class="abs h1" style="left:150px;top:230px;width:1300px;font-size:56px;${rise(lt, 0.2)}">${esc(M.title)}</div>
+      <div class="abs" style="left:150px;top:${M.title.length > 70 ? 450 : 400}px;width:1300px">${M.authors.map((a, i) => `<span style="display:inline-block;margin:0 26px 18px 0;font-size:36px;font-weight:${a === "Sanket Salvi" ? 700 : 400};color:${a === "Sanket Salvi" ? "#46e2ff" : "#fff"};${pop(lt, 0.5 + i * 0.35, 0.35)}">${esc(a)}</span>`).join("")}</div>
+      <div class="abs mono" style="left:150px;top:${M.title.length > 70 ? 610 : 560}px;font-size:24px;color:#9aa7b4;letter-spacing:.06em;${rise(lt, 2.2)}">${esc(M.venue)}<br>${esc(M.publisher)}${M.doi ? ` · doi:${esc(M.doi)}` : ""}</div>
+      <div class="abs" style="left:150px;top:${M.title.length > 70 ? 710 : 660}px;display:flex;gap:14px">${M.badges.map((b, i) => `<span class="chip" style="color:${b.startsWith("★") ? "#ffb35c" : "#46e2ff"};${pop(lt, 2.8 + i * 0.25, 0.4)}">${esc(b)}</span>`).join("")}</div>`;
+
   V.outro = (s, lt) => `
       <div class="abs center" style="top:250px;font-size:120px;font-weight:200;letter-spacing:.16em;text-indent:.16em;text-shadow:0 0 30px rgba(70,226,255,.6);${rise(lt, 0)}">RESEARCH</div>
       <div class="abs center kick glow" style="top:400px;font-size:52px;letter-spacing:.7em;text-indent:.7em;${rise(lt, 0.2)}">BYTES</div>
