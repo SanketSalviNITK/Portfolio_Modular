@@ -46,6 +46,7 @@
           <h1>RESEARCH</h1>
           <p class="lead">${esc(d.intro)}</p>
           <div class="btns" style="margin-top:22px"><a class="btn primary" href="#tab=join" data-go="join">JOIN MY RESEARCH</a><a class="btn" href="#active" data-go="active">ACTIVE PROJECTS</a><a class="btn" href="#tab=pubs" data-go="pubs">PUBLICATIONS</a></div>
+          <button class="play" type="button" id="story-open"><i aria-hidden="true">▶</i>WATCH THE STORY <small>75 s</small></button>
         </div>
         <div class="map3d" id="map3d" role="img" aria-label="Map of research areas with their active projects and papers. The same items are in the tabs below.">
           <div class="map-legend"><i class="a"></i>Area <i class="p"></i>Active project <i class="r"></i>Paper<span>drag to turn · click to open</span></div>
@@ -77,6 +78,11 @@
           <div class="row"><span class="pill ${status[p.status] || ""}">${esc(p.status)}</span><span>${esc(p.title)}</span><span class="where">${esc(p.where)} · ${esc(p.year)}</span></div>`).join("")}
         </div>
       </section>
+
+      <dialog class="story" id="story" aria-label="Research story video">
+        <button class="story-x" type="button" aria-label="Close">✕</button>
+        <video controls playsinline preload="none" poster="assets/research-story.jpg" src="assets/research-story.mp4"></video>
+      </dialog>
 
       <section class="panel" role="tabpanel" id="panel-join" aria-labelledby="tab-join" data-panel="join" hidden>
         ${joinForm(d)}
@@ -216,6 +222,16 @@
       if (sel) sel.value = a.dataset.project;
     }));
     if (page === "research") wireResearch(d);
+    const story = main.querySelector("#story");                 // the research story video, in a dialog
+    if (story && story.showModal) {
+      const video = story.querySelector("video");
+      main.querySelector("#story-open").addEventListener("click", () => { story.showModal(); video.play().catch(() => {}); });
+      story.querySelector(".story-x").addEventListener("click", () => story.close());
+      story.addEventListener("click", (e) => { if (e.target === story) story.close(); });   // a click outside the video
+      story.addEventListener("close", () => video.pause());
+    } else if (story) {
+      main.querySelector("#story-open").remove();
+    }
   }
 
   // tabs, the publication filters and "show more"; window.ResearchUI lets the 3D map drive them

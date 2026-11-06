@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Research story (video frames)</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; background: #03060a; color: #e8eef2; }
+  body { font-family: "Inter Display", "Inter", sans-serif; -webkit-font-smoothing: antialiased; }
+  #bg, #gl, #fx { position: absolute; inset: 0; }
+  #ov { position: absolute; inset: 0; }
+  .mono { font-family: "Courier New", ui-monospace, monospace; }
+  .abs { position: absolute; }
+  .center { left: 0; right: 0; text-align: center; }
+  .kick { font-family: "Courier New", monospace; font-weight: 700; font-size: 22px; letter-spacing: .5em; text-transform: uppercase; color: #46e2ff; }
+  .glow { text-shadow: 0 0 18px rgba(70, 226, 255, .65), 0 0 2px rgba(70, 226, 255, .9); }
+  .stamp { font-family: "Courier New", monospace; font-weight: 700; border: 3px solid #ffb35c; color: #ffb35c; padding: 10px 22px; letter-spacing: .35em; }
+  .frame { position: absolute; border: 1.5px solid rgba(70, 226, 255, .55); background: rgba(8, 14, 22, .78);
+    box-shadow: 0 0 40px -6px rgba(70, 226, 255, .45), inset 0 0 0 1px rgba(255, 255, 255, .03); overflow: hidden; }
+  .frame::before, .frame::after { content: ""; position: absolute; width: 22px; height: 22px; border: 3px solid var(--fc, #46e2ff); z-index: 3; }
+  .frame::before { left: -2px; top: -2px; border-right: none; border-bottom: none; }
+  .frame::after { right: -2px; bottom: -2px; border-left: none; border-top: none; }
+  .counter { position: absolute; width: 300px; height: 230px; border: 1.5px solid rgba(70, 226, 255, .4); background: rgba(8, 14, 22, .7); padding: 34px 30px; }
+  .counter b { display: block; font-size: 96px; font-weight: 700; line-height: 1; color: #fff; }
+  .counter span { display: block; margin-top: 18px; font-family: "Courier New", monospace; font-size: 18px; letter-spacing: .22em; text-transform: uppercase; color: #9aa7b4; }
+  .tag { display: inline-block; font-family: "Courier New", monospace; font-size: 18px; letter-spacing: .14em; padding: 6px 12px; border: 1.5px solid currentColor; text-transform: uppercase; }
+  .rain { position: absolute; font-family: "Courier New", monospace; font-size: 15px; letter-spacing: .04em; white-space: nowrap; color: #46e2ff; }
+  #vig { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, .7) 100%); }
+  #scan { position: absolute; inset: 0; pointer-events: none; opacity: .07;
+    background: repeating-linear-gradient(0deg, rgba(255, 255, 255, .5) 0 1px, transparent 1px 3px); }
+  #flash { position: absolute; inset: 0; background: #fff; opacity: 0; pointer-events: none; }
+  #fade { position: absolute; inset: 0; background: #000; opacity: 0; pointer-events: none; }
+</style>
+</head>
+<body>
+<canvas id="bg" width="1920" height="1080"></canvas>
+<div id="gl"></div>
+<div id="ov"></div>
+<div id="vig"></div><div id="scan"></div><div id="flash"></div><div id="fade"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="video.js"></script>
+</body>
+</html>

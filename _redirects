@@ -1,0 +1,9 @@
+# Cloudflare Pages only (research.onlysanket.in). GitHub Pages, which serves onlysanket.in, ignores this file.
+# The subdomain opens the Research page; the other pages send visitors to the main site.
+/                  /research                                200
+/index.html        https://onlysanket.in/                   301
+/index             https://onlysanket.in/                   301
+/consulting.html   https://onlysanket.in/consulting.html    301
+/consulting        https://onlysanket.in/consulting.html    301
+/admin.html        https://onlysanket.in/admin.html         301
+/admin             https://onlysanket.in/admin.html         301
