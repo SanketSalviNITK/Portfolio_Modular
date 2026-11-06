@@ -17,6 +17,7 @@
     .then(async (d) => {
       if (page === "research") {                              // the full publication list, generated from the workbook
         d.publications = await fetch("data/publications.json", { cache: "no-cache" }).then((r) => (r.ok ? r.json() : null)).catch(() => null);
+        d.videos = await fetch("data/videos.json", { cache: "no-cache" }).then((r) => (r.ok ? r.json() : null)).catch(() => null);
       }
       main.innerHTML = page === "research" ? research(d) : consulting(d);
       wire(d);
@@ -83,6 +84,10 @@
         <button class="story-x" type="button" aria-label="Close">✕</button>
         <video controls playsinline preload="none" poster="assets/research-story.jpg" src="assets/research-story.mp4"></video>
       </dialog>
+      <dialog class="story" id="yt" aria-label="Paper explainer video">
+        <button class="story-x" type="button" aria-label="Close">✕</button>
+        <div class="yt-frame"></div>
+      </dialog>
 
       <section class="panel" role="tabpanel" id="panel-join" aria-labelledby="tab-join" data-panel="join" hidden>
         ${joinForm(d)}
@@ -91,7 +96,8 @@
   }
 
   function pubTools(d, P){
-    const kinds = [["hl", "★ Highlights", d.featured.length], ["", "All", P.items.length],
+    const nVideos = P.items.filter((x) => videoOf(d, x.title)).length;
+    const kinds = [["hl", "★ Highlights", d.featured.length], ["", "All", P.items.length], ["video", "▶ Videos", nVideos],
       ...Object.keys(P.counts || {}).map((t) => [t, { "Journal": "Journals", "Conference": "Conferences", "Book chapter": "Book chapters" }[t] || t, P.counts[t]])];
     const topics = [...new Set([...P.items.flatMap((x) => x.topics || []), ...d.featured.flatMap((f) => AREA_TOPICS[f.area] || [f.area])])].sort();
     return `
@@ -109,8 +115,12 @@
   }
 
   // one neon card per publication; the highlighted papers carry their plain-language summary
+  // a Research Bytes episode for a paper, if there is one: data/videos.json matches it by a piece of the title
+  const videoOf = (d, title) => ((d.videos && d.videos.items) || []).find((v) => v.youtube && v.match && title.toLowerCase().includes(v.match.toLowerCase()));
+
   function pubCards(d, P){
     const card = (x, hl) => {
+      const v = videoOf(d, x.title);
       const topics = hl ? (AREA_TOPICS[x.area] || [x.area]) : (x.topics || []);
       const kind = hl ? "hl" : TYPE[x.type] || "conf";
       const people = x.authors || (x.with ? `with ${x.with}` : "");
@@ -122,6 +132,7 @@
         <div class="nc-venue">${esc(x.venue)}${x.indexed ? ` · ${esc(x.indexed)}` : ""}</div>
         ${hl && x.summary ? `<p class="nc-sum">${esc(x.summary)}</p>` : ""}
         ${people ? `<div class="nc-by">${esc(people)}</div>` : ""}
+        ${v ? `<button type="button" class="nc-watch" data-yt="${esc(v.youtube)}" data-title="${esc(x.title)}">▶ WATCH${v.length ? ` · ${esc(v.length)}` : ""}</button>` : ""}
         <div class="nc-foot"><span class="nc-tags">${topics.map((t) => `<span>${esc(t)}</span>`).join("")}</span>${x.link ? `<span class="nc-open">OPEN ↗</span>` : ""}</div>
       </article>`;
     };
@@ -232,6 +243,18 @@
     } else if (story) {
       main.querySelector("#story-open").remove();
     }
+    const yt = main.querySelector("#yt");                       // a paper's explainer: the YouTube player loads only on click
+    if (yt && yt.showModal) {
+      const frame = yt.querySelector(".yt-frame");
+      main.querySelectorAll(".nc-watch").forEach((b) => b.addEventListener("click", () => {
+        frame.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(b.dataset.yt)}?autoplay=1&rel=0&modestbranding=1"
+          title="${esc(b.dataset.title)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
+        yt.showModal();
+      }));
+      yt.querySelector(".story-x").addEventListener("click", () => yt.close());
+      yt.addEventListener("click", (e) => { if (e.target === yt) yt.close(); });
+      yt.addEventListener("close", () => { frame.innerHTML = ""; });   // stops the video
+    } else main.querySelectorAll(".nc-watch").forEach((b) => b.remove());
   }
 
   // tabs, the publication filters and "show more"; window.ResearchUI lets the 3D map drive them
@@ -268,7 +291,7 @@
       if (!keep) limit = PAGE;
       const type = pick(".segb").dataset.type, topic = pick(".chip[data-topic]").dataset.topic;
       const words = q.value.toLowerCase().split(/\s+/).filter(Boolean);
-      const hits = cards.filter((c) => (type === "" ? c.dataset.type !== "hl" : c.dataset.type === type)
+      const hits = cards.filter((c) => (type === "" ? c.dataset.type !== "hl" : type === "video" ? c.dataset.type !== "hl" && c.querySelector(".nc-watch") : c.dataset.type === type)
         && (!topic || c.dataset.topics.split("|").includes(topic)) && words.every((w) => c.dataset.text.includes(w)));
       cards.forEach((c) => { c.hidden = true; c.classList.remove("in"); });
       hits.slice(0, limit).forEach((c, i) => { c.hidden = false; c.style.setProperty("--i", Math.min(i, 11)); void c.offsetWidth; c.classList.add("in"); });
