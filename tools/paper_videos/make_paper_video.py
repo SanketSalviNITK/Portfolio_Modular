@@ -127,13 +127,23 @@ def open_page(pw, tl, size=(1920, 1080)):
 
 def youtube_text(tl, out_dir, slug):
     M = tl["meta"]
-    chapters, last = [], None
-    for sc in tl["scenes"]:                                       # YouTube chapters: start at 0:00, at least 10 s each
+    chapters = []                                                 # [start, end, name], one per named part
+    for sc in tl["scenes"]:
         name = CHAPTERS.get(sc["view"], sc["view"].title())
-        if name == last or (chapters and sc["start"] - chapters[-1][0] < 10):
+        if chapters and chapters[-1][2] == name:
+            chapters[-1][1] = sc["end"]
+        else:
+            chapters.append([sc["start"], sc["end"], name])
+    i = 0                                                         # YouTube needs 10 s per chapter: join a short one with the next
+    while i < len(chapters):
+        if chapters[i][1] - chapters[i][0] < 10 and len(chapters) > 1:
+            j = i + 1 if i + 1 < len(chapters) else i - 1
+            a, b = sorted((i, j))
+            chapters[a:b + 1] = [[chapters[a][0], chapters[b][1], f"{chapters[a][2]} · {chapters[b][2]}"]]
+            i = 0
             continue
-        chapters.append((sc["start"] if chapters else 0, name))
-        last = name
+        i += 1
+    chapters = [(0 if k == 0 else c[0], c[2]) for k, c in enumerate(chapters)]
     stamp = lambda s: f"{int(s) // 60}:{int(s) % 60:02}"
     narration = " ".join(c["text"] for sc in tl["scenes"][2:-2] for c in sc["captions"])
     lines = [

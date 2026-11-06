@@ -97,7 +97,9 @@
     const slider = (label, y) => `<div style="position:absolute;left:40px;top:${y}px;width:560px">
         <div class="mono" style="display:flex;justify-content:space-between;font-size:22px;color:#fff"><span>${label}</span><span style="color:${AM}">${b}</span></div>
         <div style="margin-top:12px;height:10px;background:rgba(255,255,255,.12)"><div style="height:100%;width:${b}%;background:${AM};box-shadow:0 0 14px ${AM}"></div></div></div>`;
-    let spark = ""; for (let i = 0; i < 40; i++) { const kk = out3(seg(lt, cs(s, 1) + 0.3 + i * 0.05, cs(s, 1) + 1.0 + i * 0.05)); spark += `${30 + i * 13},${(210 - 160 * kk - 6 * hash(i)).toFixed(0)} `; }
+    // the reading over time: one point per tick, drawn up to now (low before the LEDs come on, high after)
+    let spark = ""; const t0 = cs(s, 0) + 0.2;
+    for (let i = 0; i < 40; i++) { const ti = t0 + i * 0.16; if (lt < ti) break; const kk = out3(seg(ti, cs(s, 1) + 0.3, cs(s, 1) + 2.4)); spark += `${30 + i * 13},${(200 - 150 * kk - 6 * hash(i)).toFixed(0)} `; }
     return head(lt, "The experiment", "Light-sensor (LDR) calibration") + `
       <div class="panel" style="left:150px;top:320px;width:640px;height:500px;${rise(lt, 0.4)}">
         <div class="mono" style="position:absolute;left:40px;top:30px;color:${CY};font-weight:700;letter-spacing:.2em;font-size:18px">CONTROLS</div>

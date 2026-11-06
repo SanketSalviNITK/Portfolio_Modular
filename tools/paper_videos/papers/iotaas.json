@@ -68,8 +68,8 @@
     {
       "view": "access",
       "hold": 0.8,
-      "say": "Every student got their own access, at any time. The kit cost eight hundred seventy rupees: about forty four rupees per student, against one sixty eight in the shared lab.",
-      "cap": "Every student got their own access, at any time. The kit cost ₹870: about ₹44 per student, against ₹168 in the shared lab."
+      "say": "Every student got their own access, at any time. The kit cost eight hundred seventy rupees: about forty three and a half rupees per student, against one sixty eight in the shared lab.",
+      "cap": "Every student got their own access, at any time. The kit cost ₹870: about ₹43.5 per student, against ₹168 in the shared lab."
     },
     {
       "view": "honest",
