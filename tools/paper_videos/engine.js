@@ -74,10 +74,11 @@
   // the YouTube thumbnail (rendered once, not part of the video): the short title, the episode and its badges, Neerja large
   V.thumb = () => `
       <div class="abs kick" style="left:110px;top:120px;font-size:30px;color:#46e2ff">RESEARCH BYTES · #${String(T.episode).padStart(2, "0")}</div>
-      <div class="abs" style="left:110px;top:200px;width:1150px;font-size:118px;font-weight:800;line-height:1.02;text-shadow:0 0 34px rgba(70,226,255,.55)">${esc(M.short)}</div>
-      <div class="abs" style="left:110px;top:${M.short.length > 22 ? 560 : 460}px;display:flex;gap:18px">${M.badges.map((b) =>
-        `<span class="chip" style="font-size:30px;padding:10px 18px;color:${b.startsWith("★") ? "#ffb35c" : "#5dffa8"}">${esc(b)}</span>`).join("")}</div>
-      <div class="abs mono" style="left:110px;bottom:110px;font-size:28px;letter-spacing:.2em;color:#9aa7b4">${esc(M.title.split(":")[0])} · ${M.year}</div>`;
+      <div class="abs" style="left:110px;top:190px;width:1150px;display:flex;flex-direction:column;gap:36px">
+        <div style="font-size:${M.short.length > 34 ? 104 : 118}px;font-weight:800;line-height:1.02;text-shadow:0 0 34px rgba(70,226,255,.55)">${esc(M.short)}</div>
+        <div style="display:flex;gap:18px">${M.badges.map((b) =>
+          `<span class="chip" style="font-size:30px;padding:10px 18px;color:${b.startsWith("★") ? "#ffb35c" : "#5dffa8"}">${esc(b)}</span>`).join("")}</div></div>
+      <div class="abs mono" style="left:110px;bottom:110px;width:1150px;font-size:26px;letter-spacing:.14em;color:#9aa7b4">${esc(M.title.split(":")[0])} · ${M.year}</div>`;
 
   // ---------------- background: a slow neon grid and drifting particles ----------------
   function drawBg(t){
