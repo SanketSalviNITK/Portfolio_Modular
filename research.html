@@ -9,13 +9,18 @@
 </head>
 <body class="research">
 <header class="top">
-  <a class="back" href="index.html">‹ BACK TO THE OFFICE</a>
+  <a class="back" href="index.html" data-main="">‹ BACK TO THE OFFICE</a>
   <nav class="paths" aria-label="Choose your path">
     <a aria-current="page" href="research.html">RESEARCH</a>
-    <a class="consult" href="consulting.html">CONSULTING</a>
+    <a class="consult" href="consulting.html" data-main="consulting.html">CONSULTING</a>
     <a class="students" href="https://students.onlysanket.in/students.html" target="_blank" rel="noopener">STUDENT HUB ↗</a>
   </nav>
 </header>
+<script>
+  // on research.onlysanket.in (Cloudflare Pages) the other pages live on the main site
+  if (location.hostname === "research.onlysanket.in")
+    document.querySelectorAll("a[data-main]").forEach((a) => { a.href = "https://onlysanket.in/" + a.dataset.main; });
+</script>
 <main data-page="research"><p class="note">Loading…</p></main>
 <footer>Dr. Sanket Salvi · Pimpri-Chinchwad, Pune · <a href="mailto:sanketsalvi.salvi@gmail.com">sanketsalvi.salvi@gmail.com</a></footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
