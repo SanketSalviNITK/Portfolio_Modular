@@ -1,0 +1,11 @@
+{
+  "_help": "Research Bytes episodes on YouTube, shown on research.html as a Watch button on the paper's card and under the Videos filter. match: a piece of the paper's title (as in data/publications.json), youtube: the video ID (the part after watch?v=), length: shown on the button. An entry with an empty youtube is ignored.",
+  "items": [
+    {
+      "match": "IoTaaS",
+      "youtube": "92ZMM9hgsW8",
+      "length": "2:05",
+      "episode": 1
+    }
+  ]
+}

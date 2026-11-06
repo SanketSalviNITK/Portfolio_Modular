@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Research Bytes (video frames)</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; background: #04070c; color: #e8eef2; }
+  body { font-family: "Inter Display", "Inter", sans-serif; -webkit-font-smoothing: antialiased; }
+  .mono { font-family: "Courier New", ui-monospace, monospace; }
+  .abs { position: absolute; }
+  .center { left: 0; right: 0; text-align: center; }
+  #bg { position: absolute; inset: 0; }
+  .layer { position: absolute; inset: 0; }
+  .kick { font-family: "Courier New", monospace; font-weight: 700; font-size: 22px; letter-spacing: .45em; text-transform: uppercase; color: #46e2ff; }
+  .glow { text-shadow: 0 0 18px rgba(70, 226, 255, .6); }
+  .h1 { font-size: 64px; font-weight: 700; line-height: 1.08; }
+  .panel { position: absolute; border: 1.5px solid rgba(70, 226, 255, .45); background: rgba(8, 14, 22, .82); box-shadow: 0 0 40px -10px rgba(70, 226, 255, .5); }
+  .chip { display: inline-block; font-family: "Courier New", monospace; font-weight: 700; font-size: 20px; letter-spacing: .14em; padding: 8px 14px; border: 2px solid currentColor; text-transform: uppercase; }
+  /* the presenter, bottom right */
+  #av { position: absolute; width: 240px; height: 240px; transform-origin: 0 0; filter: drop-shadow(0 12px 30px rgba(0, 0, 0, .6)); }
+  #av svg { width: 240px; height: 240px; display: block; }
+  #tag { position: absolute; font-family: "Courier New", monospace; font-weight: 700; font-size: 16px; letter-spacing: .3em; color: #04070c; background: #46e2ff; padding: 5px 10px; }
+  /* captions */
+  #cap { position: absolute; left: 240px; right: 420px; bottom: 54px; text-align: center; }
+  #cap span { display: inline; font-size: 38px; line-height: 1.5; font-weight: 600; color: #fff; background: rgba(4, 7, 12, .78);
+    box-decoration-break: clone; -webkit-box-decoration-break: clone; padding: 4px 14px; }
+  #bug { position: absolute; left: 60px; top: 46px; font-family: "Courier New", monospace; font-weight: 700; font-size: 18px; letter-spacing: .4em; color: #46e2ff; }
+  #bug b { color: #e8eef2; }
+  #bar { position: absolute; left: 0; bottom: 0; height: 5px; background: linear-gradient(90deg, #46e2ff, #5dffa8); box-shadow: 0 0 12px #46e2ff; }
+  #fx { position: absolute; inset: 0; pointer-events: none; }
+  #fade { position: absolute; inset: 0; background: #000; pointer-events: none; }
+  #vig { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse at center, transparent 58%, rgba(0, 0, 0, .55) 100%); }
+</style>
+</head>
+<body>
+<canvas id="bg" width="1920" height="1080"></canvas>
+<div class="layer" id="A"></div><div class="layer" id="B"></div>
+<div id="vig"></div><div id="fx"></div>
+<div id="bug"><b>RESEARCH</b> BYTES</div>
+<div id="cap"></div>
+<div id="av"></div><div id="tag">NEERJA</div>
+<div id="bar"></div><div id="fade"></div>
+<script src="neerja.js"></script>
+<script src="engine.js"></script>
+<script>document.write('<script src="papers/' + window.TIMELINE.id + '.js"><\/script>');</script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+{
+  "_help": "One Research Bytes episode. meta feeds the title card, credits, thumbnail and YouTube text. scenes: view = a function in papers/<id>.js (or the shared intro/title/outro), say = what Neerja says (one caption per sentence; cap = the caption when it differs from the spoken text), hold = extra seconds after the voice. Every fact here is from the paper.",
+  "id": "iotaas",
+  "episode": 1,
+  "meta": {
+    "title": "IoTaaS: An Internet of Things as a Service Framework for Virtual Experimentation",
+    "short": "A real IoT lab, in the cloud",
+    "authors": [
+      "Saurav Bhise",
+      "Devanshu Mehta",
+      "Sagar Apune",
+      "Anuradha Nagare",
+      "Sanket Salvi"
+    ],
+    "venue": "AIR 2025 · International Conference on AI and Robotics, Nazarbayev University",
+    "publisher": "Springer · Lecture Notes in Networks and Systems",
+    "year": 2025,
+    "badges": [
+      "★ Best Paper",
+      "AIR 2025",
+      "Springer"
+    ],
+    "doi": "",
+    "link": "https://onlysanket.in/research.html#tab=pubs",
+    "domain": "IoT Education"
+  },
+  "scenes": [
+    {
+      "view": "intro"
+    },
+    {
+      "view": "title",
+      "hold": 0.6,
+      "say": "Today's paper: IoTaaS, an IoT as a Service framework for virtual experimentation. It won Best Paper at AIR 2025."
+    },
+    {
+      "view": "hook",
+      "hold": 0.5,
+      "say": "Learning IoT needs real hardware. But in many schools, labs are costly, shared, and open only in college hours. In this study, six kits were shared by thirty one students."
+    },
+    {
+      "view": "idea",
+      "hold": 0.4,
+      "say": "So what if the lab came to you, as a service? IoTaaS puts a real IoT lab online, open all day, on any device."
+    },
+    {
+      "view": "arch",
+      "hold": 0.5,
+      "say": "You sign in, pick an experiment, and read the theory first. A queue gives each student the real hardware in turn. Your clicks travel through Web of Things A P Is to a Raspberry Pi and an Arduino, driving the LEDs and sensors. And a webcam streams it all, live.",
+      "cap": "You sign in, pick an experiment, and read the theory first. A queue gives each student the real hardware in turn. Your clicks travel through Web of Things APIs to a Raspberry Pi and an Arduino, driving the LEDs and sensors. And a webcam streams it all, live."
+    },
+    {
+      "view": "demo",
+      "hold": 0.8,
+      "say": "Here's the light sensor experiment. Turn both LEDs up to full, and watch the light reading jump, live."
+    },
+    {
+      "view": "study",
+      "hold": 0.3,
+      "say": "To test it, the team started with fifty one second year students. Twenty low scorers used the virtual lab for a week, and twenty used the physical lab."
+    },
+    {
+      "view": "results",
+      "hold": 0.8,
+      "say": "Test scores rose twenty five percent, against fifteen in the physical lab. Satisfaction was four point five out of five, against three point eight. Sessions ran thirty minutes instead of twenty, and ninety percent of tasks were completed.",
+      "cap": "Test scores rose 25%, against 15% in the physical lab. Satisfaction was 4.5 out of 5, against 3.8. Sessions ran 30 minutes instead of 20, and 90% of tasks were completed."
+    },
+    {
+      "view": "access",
+      "hold": 0.8,
+      "say": "Every student got their own access, at any time. The kit cost eight hundred seventy rupees: about forty three and a half rupees per student, against one sixty eight in the shared lab.",
+      "cap": "Every student got their own access, at any time. The kit cost ₹870: about ₹43.5 per student, against ₹168 in the shared lab."
+    },
+    {
+      "view": "honest",
+      "hold": 0.5,
+      "say": "Physical labs still matter for hands-on, high fidelity work. But IoTaaS brings real IoT practice to every student."
+    },
+    {
+      "view": "credits",
+      "hold": 1.0,
+      "say": "This work is by Saurav Bhise, Devanshu Mehta, Sagar Apune, Anuradha Nagare and Sanket Salvi."
+    },
+    {
+      "view": "outro",
+      "hold": 2.2,
+      "say": "Read the full paper, link in the description. See you in the next byte!"
+    }
+  ]
+}
