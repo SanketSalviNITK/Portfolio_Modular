@@ -1,0 +1,117 @@
+{
+  "_help": "Research Bytes #03. Every fact is from the paper (IEEE Access, vol. 10, 2022). Where the paper disagrees with itself the script uses the value stated most often or the one in its tables: resolution 160x140 (also printed once as 160x120); BER at 2 m and 256 bps from Table 3 (the conclusion's ~20% matches Fig. 19 instead). The 48.6% / 42.5% improvements are (BER_existing - BER_proposed) / BER_existing from Table 3. The Data Matrix grid in the visuals is illustrative.",
+  "id": "occ",
+  "episode": 3,
+  "meta": {
+    "title": "A Nested Texture Inspired Novel Image Pattern Based Optical Camera Communication",
+    "short": "Data on light, read by a camera",
+    "authors": [
+      "Sanket Salvi",
+      "V. Geetha"
+    ],
+    "venue": "IEEE Access, vol. 10, pp. 109056–109067, 2022 · NIT Karnataka, Surathkal",
+    "publisher": "IEEE",
+    "year": 2022,
+    "badges": [
+      "IEEE Access",
+      "Journal",
+      "Open access"
+    ],
+    "doi": "10.1109/ACCESS.2022.3213701",
+    "link": "https://onlysanket.in/research.html#tab=pubs",
+    "domain": "Li-Fi / VLC",
+    "tags": [
+      "optical camera communication",
+      "Li-Fi",
+      "visible light communication",
+      "LED matrix",
+      "pattern recognition",
+      "Internet of Things",
+      "Industrial IoT"
+    ]
+  },
+  "scenes": [
+    {
+      "view": "intro"
+    },
+    {
+      "view": "title",
+      "hold": 0.6,
+      "say": "Today's paper: a nested texture pattern for camera communication, in I triple E Access.",
+      "cap": "Today's paper: a nested texture pattern for camera communication, in IEEE Access."
+    },
+    {
+      "view": "need",
+      "chapter": "The need",
+      "hold": 0.5,
+      "say": "Radio is getting crowded, and isn't welcome everywhere, like in hospitals. But light can carry data too. An LED sends it, and an ordinary camera reads it."
+    },
+    {
+      "view": "problem",
+      "chapter": "The problem",
+      "hold": 0.5,
+      "say": "One way is to flash patterns on an LED grid, like a tiny Q R code. But from further away, the dots blur together. And checking all 256 possible patterns takes time.",
+      "cap": "One way is to flash patterns on an LED grid, like a tiny QR code. But from further away, the dots blur together. And checking all 256 possible patterns takes time."
+    },
+    {
+      "view": "idea",
+      "chapter": "The pattern",
+      "hold": 0.5,
+      "say": "This paper borrows from texture analysis: patterns inside patterns. Each byte becomes an 8 by 8 grid. Four corner blocks carry the first four bits, and four centre blocks the rest.",
+      "cap": "This paper borrows from texture analysis: patterns inside patterns. Each byte becomes an 8×8 grid. Four corner blocks carry the first four bits, and four centre blocks the rest."
+    },
+    {
+      "view": "encode",
+      "chapter": "The pattern",
+      "hold": 0.9,
+      "say": "A zero lights a full block of four LEDs. A one lights three, in an L. Here's the byte: one, zero, one, one, zero, one, one, one.",
+      "cap": "A zero lights a full block of four LEDs. A one lights three, in an L. Here's the byte: 10110111."
+    },
+    {
+      "view": "energy",
+      "chapter": "The pattern",
+      "hold": 0.4,
+      "say": "The nested pattern is more orderly, so it stays clearer from further away. Its energy score is zero point four four, against zero point two seven for a Data Matrix. The trade-off: a little less information.",
+      "cap": "The nested pattern is more orderly, so it stays clearer from further away. Its energy score is 0.44, against 0.27 for a Data Matrix. The trade-off: a little less information."
+    },
+    {
+      "view": "decode",
+      "chapter": "Decoding",
+      "hold": 0.5,
+      "say": "The receiver splits it into outer and inner parts, and matches both at once, on two threads. Each search covers 16 patterns, not 256."
+    },
+    {
+      "view": "proto",
+      "chapter": "The prototype",
+      "hold": 0.4,
+      "say": "The prototype: an Arduino Uno, an 8 by 8 LED matrix, and a webcam set to a tiny 160 by 140 pixels. Camera settings were tuned for the best signal to noise ratio.",
+      "cap": "The prototype: an Arduino Uno, an 8×8 LED matrix, and a webcam set to a tiny 160×140 pixels. Camera settings were tuned for the best signal-to-noise ratio."
+    },
+    {
+      "view": "results",
+      "chapter": "Results",
+      "hold": 0.8,
+      "say": "At higher data rates, the two-thread search beat a linear search. At two metres and 256 bits per second, errors were forty eight point six percent lower than Data Matrix, and forty two point five percent lower than Q R Code.",
+      "cap": "At higher data rates, the two-thread search beat a linear search. At two metres and 256 bits per second, errors were 48.6% lower than Data Matrix, and 42.5% lower than QR Code."
+    },
+    {
+      "view": "next",
+      "chapter": "What's next",
+      "hold": 0.6,
+      "say": "It's built for factories, where a camera could read machine data without radio. Next: sharper cameras, magnification, and more patterns and colours."
+    },
+    {
+      "view": "credits",
+      "chapter": "Credits",
+      "hold": 0.8,
+      "say": "This work is by Sanket Salvi and V Geetha, at N I T Karnataka, Surathkal.",
+      "cap": "This work is by Sanket Salvi and V Geetha, at NIT Karnataka, Surathkal."
+    },
+    {
+      "view": "outro",
+      "chapter": "Credits",
+      "hold": 2.2,
+      "say": "Read the full paper, link in the description. See you in the next byte!"
+    }
+  ]
+}
