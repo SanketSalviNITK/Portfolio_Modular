@@ -202,6 +202,15 @@
         <article class="card"><h3>${esc(s.title)}</h3><p>${esc(s.desc)}</p><div class="proof">${esc(s.proof)}</div></article>`).join("")}
       </div>
 
+      ${(d.workshops || []).length ? `<h2 id="workshops">Workshops</h2>
+      <div class="grid">${d.workshops.map((w) => `
+        <article class="card">
+          <div class="meta"><span class="pill gold">${esc(w.tag)}</span></div>
+          <h3>${esc(w.title)}</h3><p>${esc(w.desc)}</p>
+          ${w.link ? `<a class="go" href="${esc(w.link)}" target="_blank" rel="noopener">OPEN THE WORKSHOP ↗</a>` : ""}
+        </article>`).join("")}
+      </div>` : ""}
+
       <h2>Selected work</h2>
       <div class="grid">${d.cases.map((c) => `
         <article class="card">
