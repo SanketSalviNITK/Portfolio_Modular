@@ -1,5 +1,5 @@
 {
-  "_help": "Content of consulting.html. Edit freely: the page reads this file on load. services: what you offer, each with proof. cases: past work you are happy to show. bookingUrl: a Calendly / Cal.com link; when empty, the page offers email only.",
+  "_help": "Content of consulting.html. Edit freely: the page reads this file on load. services: what you offer, each with proof. cases: past work you are happy to show. bookingUrl: a Calendly / Cal.com link; when empty, the page offers email only. workshops: past and upcoming workshops, each with a link to its own interactive platform.",
   "intro": "Over a decade of building software and hardware systems, as a freelance consultant and as a researcher. I help colleges, start-ups and companies turn an idea in IoT, AI or education technology into a working system, and train the teams who will run it.",
   "services": [
     {
@@ -31,6 +31,22 @@
       "title": "Training & workshops",
       "desc": "Faculty development programmes, corporate training and hands-on workshops in IoT, full-stack development, AR/VR and applied AI.",
       "proof": "12 years of teaching · Wipro Global Java Trainer certification"
+    }
+  ],
+  "workshops": [
+    {
+      "title": "Gamified Web Development with GenAI",
+      "tag": "Workshop · Students",
+      "date": "2026",
+      "desc": "A multiplayer, game-based workshop where students build their own portfolio website with AI coding assistants: Git and GitHub, a glassmorphism portfolio, a Three.js 3D scene, a 3D avatar and a chatbot. Every quest is verified against the student's own GitHub repository, and the class defeats the Glitch Overlord together in a live 3D arena on the projector.",
+      "link": "https://gamified-web-devlopement-workshop-genai.vercel.app/"
+    },
+    {
+      "title": "AI for School Leaders 2026",
+      "tag": "Workshop · Lucknow",
+      "date": "2026",
+      "desc": "A full-day, hands-on capacity-building workshop for CBSE principals of the Barabanki and Bahraich Sahodaya clusters: leadership with AI, the CT & AI curriculum, and school management and branding. Fifteen missions in free Gemini, a shared School Command Sheet, and bilingual handouts in English and Hindi.",
+      "link": "https://sanketsalvinitk.github.io/AI-School-Leaders-Lucknow-2026/"
     }
   ],
   "cases": [
