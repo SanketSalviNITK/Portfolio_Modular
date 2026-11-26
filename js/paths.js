@@ -207,6 +207,12 @@
         <article class="card">
           <div class="meta"><span class="pill gold">${esc(w.tag)}</span></div>
           <h3>${esc(w.title)}</h3><p>${esc(w.desc)}</p>
+          ${w.video ? `<figure class="ws-video">
+            <video controls playsinline preload="none" poster="${esc(w.video.poster || "")}" src="${esc(w.video.src)}" aria-label="${esc(w.video.title || w.title)}">${w.video.captions ? `
+              <track kind="captions" srclang="en" label="English" src="${esc(w.video.captions)}">` : ""}
+            </video>
+            ${w.video.title ? `<figcaption>${esc(w.video.title)}</figcaption>` : ""}
+          </figure>` : ""}
           ${w.link ? `<a class="go" href="${esc(w.link)}" target="_blank" rel="noopener">OPEN THE WORKSHOP ↗</a>` : ""}
         </article>`).join("")}
       </div>` : ""}
