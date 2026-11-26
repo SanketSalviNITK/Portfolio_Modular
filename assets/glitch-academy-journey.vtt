@@ -1,0 +1,172 @@
+WEBVTT
+
+00:00.350 --> 00:01.355
+Glitch Academy.
+
+00:01.355 --> 00:05.243
+One student's journey, from sign-in to defeating the boss.
+
+00:06.243 --> 00:10.222
+This is Glitch Academy, a gamified web development workshop.
+
+00:10.222 --> 00:13.935
+Let's follow one student through the whole course, live.
+
+00:16.777 --> 00:19.235
+The student signs in with GitHub.
+
+00:19.235 --> 00:23.631
+Their deck shows five quests, badges and experience points.
+
+00:23.631 --> 00:25.717
+Quests unlock one at a time.
+
+00:26.610 --> 00:32.705
+On the projector, the arena shows the class as robots, facing the Glitch Overlord at full health.
+
+00:35.610 --> 00:37.766
+Learning happens in the course:
+
+00:37.766 --> 00:43.122
+five modules, each with short lessons, interactive labs, a quiz, and a quest.
+
+00:44.877 --> 00:46.707
+Module one is Git and GitHub.
+
+00:46.707 --> 00:53.649
+Here the student writes a README in a live Markdown editor, then answers a quick check to complete the lesson.
+
+00:56.610 --> 01:00.099
+Every module ends with a quiz, scored on the server.
+
+01:00.099 --> 01:04.929
+A wrong answer explains why, gives a hint, and links back to the lesson.
+
+01:17.177 --> 01:18.918
+Seventy percent passes.
+
+01:19.843 --> 01:21.121
+Now the real test.
+
+01:21.121 --> 01:25.877
+The student pushes their work to GitHub and submits the repository.
+
+01:25.877 --> 01:27.865
+The verifier checks it live:
+
+01:27.865 --> 01:32.337
+the repo is theirs, the commit is new, and the README is there.
+
+01:35.010 --> 01:36.371
+Quest one passed.
+
+01:36.371 --> 01:39.254
+A badge lights up and XP is awarded.
+
+01:40.143 --> 01:42.262
+In the arena, the hit lands.
+
+01:42.262 --> 01:46.500
+The boss loses health with every lesson, quiz and quest.
+
+01:54.677 --> 01:58.309
+Module two builds the portfolio with HTML and CSS.
+
+01:58.309 --> 02:03.611
+The glass tuner shows how a backdrop blur creates the glassmorphism look.
+
+02:08.643 --> 02:14.959
+Quiz two covers semantic HTML, the box model, flexbox and responsive design.
+
+02:21.777 --> 02:25.417
+The second commit adds a responsive portfolio page.
+
+02:25.417 --> 02:32.127
+The verifier checks the sections, the hand-written CSS, the glass effect and the viewport tag.
+
+02:36.210 --> 02:37.290
+Two badges.
+
+02:40.210 --> 02:42.114
+The Overlord is getting weaker.
+
+02:49.743 --> 02:52.908
+Module three brings 3D with Three.js.
+
+02:52.908 --> 03:00.860
+In the light lab, the scene stays pitch black until the student adds ambient light and a sun.
+
+03:05.077 --> 03:05.899
+Quiz three:
+
+03:05.899 --> 03:09.338
+scenes, meshes, lights and the animation loop.
+
+03:17.377 --> 03:21.955
+Quest three adds a rotating 3D background behind the portfolio.
+
+03:21.955 --> 03:27.913
+The verifier looks for the scene, camera, renderer, animation, and a fixed canvas.
+
+03:33.010 --> 03:34.113
+Three badges.
+
+03:37.010 --> 03:38.322
+Another direct hit.
+
+03:46.543 --> 03:49.191
+Module four loads a real 3D avatar.
+
+03:49.191 --> 03:56.000
+In Chassis Sync, the student moves, scales and turns the robot until it matches the ghost.
+
+04:05.943 --> 04:06.923
+Quiz four:
+
+04:06.923 --> 04:12.608
+model formats, the GLTF loader, file paths and transforms.
+
+04:18.477 --> 04:24.103
+For quest four, the avatar file is committed and loaded with the GLTF loader.
+
+04:24.103 --> 04:29.803
+The verifier even checks that the file path matches, capital letters included.
+
+04:32.743 --> 04:33.777
+Four badges.
+
+04:36.743 --> 04:38.009
+One quest to go.
+
+04:46.277 --> 04:48.124
+Module five builds a chatbot.
+
+04:48.124 --> 04:55.257
+In the intent router, the student fixes the patterns and their order, until every visitor gets the right answer.
+
+05:00.110 --> 05:01.326
+The final quiz:
+
+05:01.326 --> 05:04.568
+events, regular expressions and intents.
+
+05:13.277 --> 05:20.707
+The last quest adds a chat window in the corner that answers with regular expressions and scrolls to the newest message.
+
+05:28.443 --> 05:30.394
+All five badges unlocked.
+
+05:32.443 --> 05:35.946
+And in the arena, the Glitch Overlord falls.
+
+05:35.946 --> 05:37.697
+Victory for the class!
+
+05:59.977 --> 06:02.414
+Everything you just saw ran live:
+
+06:02.414 --> 06:06.624
+real sign-in, real quizzes, and real GitHub verification.
+
+06:06.624 --> 06:08.249
+That's Glitch Academy.
