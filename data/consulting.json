@@ -77,6 +77,12 @@
       "desc": "Road conditions reported by the crowd and mapped in the cloud."
     },
     {
+      "title": "Megh Map: India rainfall map & explainable rainwater harvesting",
+      "tag": "Water & climate tech · Live beta",
+      "desc": "A web platform that maps normal rainfall for 2,253 Indian talukas and turns it into a rainwater harvesting design for any roof: harvest estimate, groundwater-aware advice, local bylaws and a 3D digital twin, with every figure cited (IMD, CHIRPS, CGWB, BIS IS 15797). In 22 Indian languages. Builds on the 2016 DIY Rainwater Harvesting Advisor.",
+      "link": "https://sanketsalvinitk.github.io/RainWaterHarvesting2.0/"
+    },
+    {
       "title": "DIY Rainwater Harvesting Advisor",
       "tag": "UNESCO-funded via KSCST",
       "desc": "A funded project (₹1,50,000, 2016) to help households plan their own rainwater harvesting."
