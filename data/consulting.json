@@ -1,5 +1,5 @@
 {
-  "_help": "Content of consulting.html. Edit freely: the page reads this file on load. services: what you offer, each with proof. cases: past work you are happy to show. bookingUrl: a Calendly / Cal.com link; when empty, the page offers email only. workshops: past and upcoming workshops, each with a link to its own interactive platform and an optional video { src, poster, captions, title } shown on the card.",
+  "_help": "Content of consulting.html. Edit freely: the page reads this file on load. services: what you offer, each with proof. cases: past work you are happy to show. bookingUrl: a Calendly / Cal.com link; when empty, the page offers email only. workshops: past and upcoming workshops, each with a link to its own interactive platform and an optional video { src, poster, captions, title } shown on the card and an optional example { label, href } link.",
   "intro": "Over a decade of building software and hardware systems, as a freelance consultant and as a researcher. I help colleges, start-ups and companies turn an idea in IoT, AI or education technology into a working system, and train the teams who will run it.",
   "services": [
     {
@@ -45,6 +45,10 @@
         "poster": "assets/glitch-academy-journey.jpg",
         "captions": "assets/glitch-academy-journey.vtt",
         "title": "Watch one student's full journey, recorded live: lessons, quizzes, five quests verified on GitHub, and the class defeating the Glitch Overlord (6 min, narrated, captions)."
+      },
+      "example": {
+        "label": "SEE A FINISHED STUDENT PORTFOLIO",
+        "href": "https://sanketsalvinitk.github.io/glitch-academy-demo/"
       }
     },
     {
