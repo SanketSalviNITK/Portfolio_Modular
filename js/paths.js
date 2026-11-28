@@ -213,7 +213,10 @@
             </video>
             ${w.video.title ? `<figcaption>${esc(w.video.title)}</figcaption>` : ""}
           </figure>` : ""}
-          ${w.link ? `<a class="go" href="${esc(w.link)}" target="_blank" rel="noopener">OPEN THE WORKSHOP ↗</a>` : ""}
+          ${w.link || w.example ? `<div class="go-row">
+            ${w.link ? `<a class="go" href="${esc(w.link)}" target="_blank" rel="noopener">OPEN THE WORKSHOP ↗</a>` : ""}
+            ${w.example ? `<a class="go" href="${esc(w.example.href)}" target="_blank" rel="noopener">${esc(w.example.label || "SEE AN EXAMPLE")} ↗</a>` : ""}
+          </div>` : ""}
         </article>`).join("")}
       </div>` : ""}
 
